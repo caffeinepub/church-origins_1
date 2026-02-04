@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.5rem;
+        
+        /* Warm neutral palette - beige/olive/brown tones */
+        --background: 0.97 0.01 60;
+        --foreground: 0.25 0.02 40;
+        
+        --card: 0.99 0.005 60;
+        --card-foreground: 0.25 0.02 40;
+        
+        --popover: 0.99 0.005 60;
+        --popover-foreground: 0.25 0.02 40;
+        
+        --primary: 0.45 0.08 50;
+        --primary-foreground: 0.98 0.005 60;
+        
+        --secondary: 0.88 0.02 55;
+        --secondary-foreground: 0.30 0.03 45;
+        
+        --muted: 0.92 0.015 55;
+        --muted-foreground: 0.50 0.03 45;
+        
+        --accent: 0.65 0.10 80;
+        --accent-foreground: 0.25 0.02 40;
+        
+        --destructive: 0.55 0.20 25;
+        --destructive-foreground: 0.98 0.005 60;
+        
+        --border: 0.88 0.015 55;
+        --input: 0.88 0.015 55;
+        --ring: 0.45 0.08 50;
+        
+        --chart-1: 0.60 0.12 45;
+        --chart-2: 0.55 0.10 80;
+        --chart-3: 0.70 0.08 120;
+        --chart-4: 0.50 0.15 30;
+        --chart-5: 0.65 0.10 200;
+    }
+
+    .dark {
+        --background: 0.20 0.02 40;
+        --foreground: 0.95 0.01 60;
+        
+        --card: 0.25 0.02 40;
+        --card-foreground: 0.95 0.01 60;
+        
+        --popover: 0.22 0.02 40;
+        --popover-foreground: 0.95 0.01 60;
+        
+        --primary: 0.70 0.08 55;
+        --primary-foreground: 0.20 0.02 40;
+        
+        --secondary: 0.35 0.03 45;
+        --secondary-foreground: 0.95 0.01 60;
+        
+        --muted: 0.35 0.03 45;
+        --muted-foreground: 0.65 0.04 50;
+        
+        --accent: 0.55 0.10 75;
+        --accent-foreground: 0.95 0.01 60;
+        
+        --destructive: 0.50 0.18 25;
+        --destructive-foreground: 0.95 0.01 60;
+        
+        --border: 0.35 0.03 45;
+        --input: 0.35 0.03 45;
+        --ring: 0.65 0.08 55;
+        
+        --chart-1: 0.55 0.12 45;
+        --chart-2: 0.50 0.10 80;
+        --chart-3: 0.65 0.08 120;
+        --chart-4: 0.45 0.15 30;
+        --chart-5: 0.60 0.10 200;
+    }
+
+    * {
+        @apply border-border;
+    }
+    
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+    }
+    
+    /* Typography enhancements for readability */
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-serif;
+    }
+}
+
+@layer utilities {
+    .font-serif {
+        font-family: 'Georgia', 'Cambria', 'Times New Roman', serif;
+    }
+    
+    /* Evangelism page styling utilities */
+    .evangelism-page {
+        @apply min-h-screen;
+    }
+}

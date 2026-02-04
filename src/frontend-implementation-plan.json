@@ -1,0 +1,28 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Smooth scroll-to-top on specific evangelism route entry",
+  "requirements": [
+    {
+      "id": "REQ-7",
+      "summary": "Add smooth auto-scroll to window top when entering /why-jesus, /how-to-begin, /assurance-next-steps, or /connect, without affecting other routes.",
+      "acceptanceCriteria": [
+        "Navigating to /why-jesus, /how-to-begin, /assurance-next-steps, or /connect results in a smooth scroll to window top (top=0).",
+        "The smooth scroll behavior occurs when clicking the evangelism pages' internal <Link> navigation cards and when using header navigation (where applicable).",
+        "Other routes (e.g., /feed, /submit-testimony, /peace-with-god) do not gain new forced scroll-to-top behavior as part of this change."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useEvangelismScrollToTop.ts",
+          "operation": "create",
+          "description": "Create a small hook that observes the current router location and triggers window.scrollTo({ top: 0, behavior: 'smooth' }) only when the pathname matches the evangelism whitelist: /why-jesus, /how-to-begin, /assurance-next-steps, /connect."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the evangelism-only scroll-to-top behavior into the root routing layout (e.g., RootLayout) so it triggers on route entry for the specified evangelism routes, regardless of whether navigation originated from header nav or in-page <Link> cards, and does not run for other routes."
+        }
+      ]
+    }
+  ]
+}

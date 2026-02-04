@@ -1,0 +1,284 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Church Origins is an Internet Computer (ICP) dapp with a Motoko canister backend and a React (TypeScript) + Tailwind/shadcn UI frontend. Authenticated users sign in with Internet Identity, complete an onboarding profile, and access a community experience that includes a unified social feed where users can create posts with optional Scripture references and interact via reactions, comments, reposts, and follow relationships. The app also includes a system/AI Scripture agent (implemented as rule-based / retrieval + templated logic, not an external LLM) that can auto-post Scripture on a baseline cadence and provide personalized, context-aware encouragement/prayer responses. Public, copyright-safe evangelism/next-steps pages (“Peace With God”, “Why Jesus?”, “How to Begin”, “Assurance & Next Steps”, “Connect”) are accessible without login and include CTAs to sign in, onboard, or visit the feed; NIV support is intended to be gated behind licensing/feature-flag considerations with graceful fallback if needed.",
+  "existing_features": [
+    {
+      "id": "IF-1",
+      "title": "Internet Identity authentication",
+      "synonyms": [
+        "II login",
+        "@dfinity/auth-client",
+        "InternetIdentityProvider"
+      ],
+      "description": "Provides login/logout via Internet Identity with persisted delegation identity, login status flags, and initialization that restores stored sessions when available.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-2",
+      "title": "Identity-aware backend actor initialization",
+      "synonyms": [
+        "useActor",
+        "createActorWithConfig",
+        "actor bootstrap"
+      ],
+      "description": "Creates an anonymous actor when unauthenticated and an identity-bound actor when authenticated; on authenticated actor creation it calls a canister initialization method to register/assign roles and then invalidates/refetches React Query caches.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-3",
+      "title": "Role-based access control with admin bootstrap secret",
+      "synonyms": [
+        "AccessControl",
+        "MixinAuthorization",
+        "admin token"
+      ],
+      "description": "Implements admin/user/guest roles in Motoko. First-time role assignment can bootstrap an admin when a user-provided secret matches the canister’s CAFFEINE_ADMIN_TOKEN; exposes APIs to check caller role/admin status and assign roles (admin-only).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-4",
+      "title": "User profile onboarding and profile CRUD (self)",
+      "synonyms": [
+        "UserProfile",
+        "OnboardingPage",
+        "getCallerUserProfile",
+        "saveCallerUserProfile"
+      ],
+      "description": "Authenticated users can create/update and fetch their own profile (name, life situation, spiritual needs). The onboarding UI saves the profile and routes users to the community feed.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-5",
+      "title": "Unauthenticated landing gate with faith-resources discovery",
+      "synonyms": [
+        "AuthGate",
+        "Explore Faith Resources",
+        "public entry point"
+      ],
+      "description": "The index route shows an unauthenticated landing page that offers Internet Identity sign-in and a direct link to the public evangelism content.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-6",
+      "title": "Legacy daily content feed (Scripture, reflections, approved testimonies)",
+      "synonyms": [
+        "getDailyFeed",
+        "DailyFeedPage Daily tab",
+        "FeedItemCard"
+      ],
+      "description": "Backend aggregates scripture entries, discernment reflections, and approved testimonies; frontend interleaves these types into a daily content tab with type-specific cards.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-7",
+      "title": "Scripture and discernment detail views",
+      "synonyms": [
+        "ScriptureDetailPage",
+        "DiscernmentDetailPage",
+        "index-based navigation"
+      ],
+      "description": "Provides detail routes for scripture entries and discernment reflections, loaded from the daily feed by index, with reading-focused presentation and navigation back to the feed.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-8",
+      "title": "Testimony submission and moderation state",
+      "synonyms": [
+        "SubmitTestimonyPage",
+        "submitTestimony",
+        "approveTestimony",
+        "rejectTestimony"
+      ],
+      "description": "Users can submit testimonies with disclaimers and optional scripture references; backend stores submissions in pending moderation state and supports admin approval/rejection. The UI shows a post-submit confirmation indicating review is required.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-9",
+      "title": "Unified social feed timeline retrieval",
+      "synonyms": [
+        "getFeed",
+        "unifiedFeed",
+        "UnifiedFeedItemCard"
+      ],
+      "description": "Backend stores FeedItem records with timestamps, type variants, references, and repost metadata; frontend renders a unified social timeline tab with formatted author/type badges and timestamps.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-10",
+      "title": "Create social posts with optional Scripture references",
+      "synonyms": [
+        "createPost",
+        "CreatePostComposer"
+      ],
+      "description": "Authenticated users can compose and submit posts with optional comma-separated Scripture references; successful submission invalidates the unified feed cache.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-11",
+      "title": "Reactions (like/unlike) on social feed items",
+      "synonyms": [
+        "addReaction",
+        "removeReaction",
+        "ReactionBar"
+      ],
+      "description": "Supports per-user emoji reactions on feed items (stored per item in the canister). The UI offers a heart toggle that adds/removes a reaction and triggers feed cache invalidation.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-12",
+      "title": "Comments UI and comment creation API",
+      "synonyms": [
+        "addComment",
+        "CommentsThreadDialog",
+        "AddCommentForm"
+      ],
+      "description": "Provides a comments dialog with an inline form to add comments (and an optional “prayer request” UI mode) including optional Scripture references; backend appends comments to the feed item’s comment list.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-13",
+      "title": "Repost/share feed items",
+      "synonyms": [
+        "repostItem",
+        "RepostButton"
+      ],
+      "description": "Users can repost an existing item; backend creates a new feed item referencing the original and increments repostCount. UI exposes a repost button and invalidates the unified feed after reposting.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-14",
+      "title": "Follow/unfollow relationships and follower counts",
+      "synonyms": [
+        "followUser",
+        "unfollowUser",
+        "getFollowersCount",
+        "FollowButton"
+      ],
+      "description": "Backend maintains follower relationships and exposes follow/unfollow and follower/following count queries. Frontend includes a follow/unfollow button (hidden for self/system).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-15",
+      "title": "System/agent posting support and verified labeling",
+      "synonyms": [
+        "createAgentPost",
+        "getLatestAgentPost",
+        "Scripture Agent badge",
+        "AgentReplyCard"
+      ],
+      "description": "Admins can create “agent” posts authored by the anonymous/system principal and retrieve the latest agent post. Frontend labels system content as “Scripture Agent” with a verified-system badge and has a dedicated agent reply card component for comment threads.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "IF-16",
+      "title": "Public evangelism and next-steps pages with shared shell and CTAs",
+      "synonyms": [
+        "Peace With God",
+        "Why Jesus",
+        "How to Begin",
+        "Assurance & Next Steps",
+        "Connect",
+        "EvangelismPageShell",
+        "EvangelismCtaCard"
+      ],
+      "description": "Implements five public, original evangelism/next-steps pages driven by a central content module, rendered with a shared page shell (optional hero banner + emblem) and a CTA card that adapts to auth/profile state (sign in, onboard, or go to feed). Includes header navigation (“Start Here”) and public routes for all pages.",
+      "reqIds": [
+        "REQ-1",
+        "REQ-2",
+        "REQ-3",
+        "REQ-4",
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-17",
+      "title": "App layout, theming, and design system integration",
+      "synonyms": [
+        "AppLayout",
+        "AppHeader",
+        "Tailwind OKLCH tokens",
+        "shadcn/ui",
+        "next-themes"
+      ],
+      "description": "Provides a consistent layout with sticky header, background texture, footer, warm neutral palette, typography defaults, and light/dark theme support; uses shadcn/ui primitives and lucide icons throughout.",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-smooth-auto-scroll-to-the-top-of-the-page-whenever-the-user-navigates-to-any-of-these-evangelism-routes-why-jesus-why-jesus-how-to-begin-how-to-begin-assurance-next-steps-assurance-next-steps-connect-ready-to-connect-connect-this-scroll-to-top-should-trigger-on-route-entry-regardless-of-which-internal-link-initiated-navigation-top-navigation-in-page-links-cta-buttons",
+      "title": "Implement smooth auto-scroll to the top of the page whenever the user navigates to any of these evangelism routes: /why-jesus (Why Jesus?), /how-to-begin (How to Begin), /assurance-next-steps (Assurance & Next Steps), /connect (Ready to Connect/Connect). This scroll-to-top should trigger on route entry regardless of which internal link initiated navigation (top navigation, in-page links, CTA buttons).",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Smooth auto-scroll to top when navigating to evangelism pages (Why Jesus, How to Begin, Assurance & Next Steps, Connect)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Add a dedicated 'Daily Deep Bible Quote' window/section posted by the AI, where users can like and comment",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Implement/extend rule-based Scripture agent: scheduled global verse posts (baseline cadence) plus personalized per-user contextual responses (comments/prayer), with NIV behind a licensing flag/fallback",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "architectural_notes": [
+    "Frontend routing uses TanStack Router with a root AppLayout shell and a mix of public routes (evangelism pages) and authenticated flows (onboarding/feed).",
+    "Data fetching/mutations are implemented with TanStack React Query; cache keys are centralized in queryKeys and mutations invalidate relevant queries.",
+    "Internet Identity auth is encapsulated in a context provider built on @dfinity/auth-client, with persisted delegation identity and a login status state machine.",
+    "Backend access control is implemented via an AccessControl module (admin/user/guest) and a Motoko mixin (MixinAuthorization) that exposes role/authorization endpoints.",
+    "Actor creation (useActor) is identity-aware: authenticated actors are created with the user identity and then call a canister init method to assign roles; an admin bootstrap secret is read from the URL hash and persisted to sessionStorage.",
+    "Social timeline is modeled as a generic FeedItem variant (user post, agent post, testimony, scripture entry, reflection) with reposts represented via originalItemId and a repostCount.",
+    "Social interactions are stored per feed item (reactions map keyed by principal, comments list) plus a follower graph (principal -> set of followers).",
+    "Evangelism pages are content-driven from a single evangelismContent module and rendered via shared components (EvangelismPageShell, EvangelismCtaCard) with static generated assets used for hero/emblem visuals.",
+    "Styling uses Tailwind with a warm, reverent OKLCH design token palette, shadcn/ui components, lucide-react icons, and next-themes for dark/light themes.",
+    "User feedback patterns include skeleton loading states and toast notifications (sonner) for mutation results."
+  ],
+  "known_issues": [
+    "Canister state is not persisted across upgrades: backend/main.mo uses in-memory Maps/Sets without stable variables and the migration hook is commented out, so upgrades will wipe data.",
+    "Authentication bootstrap hard-depends on CAFFEINE_ADMIN_TOKEN: _initializeAccessControlWithSecret traps if the env var is missing, preventing any authenticated user from initializing roles.",
+    "Profile privacy vs UI mismatch: backend getUserProfile only allows self or admin, but the unified feed UI tries to look up arbitrary authors’ profiles (AuthorIdentityBadge), which will trap/error for non-admin viewers.",
+    "Comments, reactions, and follow state are write-only from the UI perspective: there are query keys defined, but no hooks/endpoints are wired to fetch comment threads, reaction counts/user reaction state, or whether the viewer already follows the author; UI defaults to 0/false.",
+    "Prayer-request toggle is misleading: the frontend sends isPrayerRequest, but backend only marks isAgentReply when caller is admin; regular users cannot flag comments for “agent reply” behavior.",
+    "Agent responses are likely unretrievable: createAgentResponse stores responses under the admin caller principal, while getResponsesToUser reads by the target user principal.",
+    "Testimonies are keyed by author Principal in a Map; submitting a second testimony overwrites the first, and there is no testimony ID/list per user.",
+    "Scripture entries and discernment reflections are keyed by their full text/content strings; duplicates overwrite, and Map.values() ordering is not stable—making index-based routing for detail pages potentially inconsistent.",
+    "Route/authorization consistency is incomplete: /feed is not router-guarded; unauthenticated users can navigate directly and will hit authorization traps (e.g., getDailyFeed), while getFeed currently has no access control check.",
+    "React Query is provided twice (QueryClientProvider in both src/main.tsx and src/App.tsx) with different QueryClient instances, which can cause confusion and inconsistent cache behavior if hooks ever render outside the inner provider."
+  ],
+  "isFixRequest": false,
+  "gameProjectType": "none",
+  "projectName": "Church Origins",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

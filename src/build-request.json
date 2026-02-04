@@ -1,0 +1,37 @@
+{
+  "kind": "build_request",
+  "title": "Smooth auto-scroll to top on evangelism page navigation",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-7",
+      "text": "Implement smooth auto-scroll to the top of the page whenever the user navigates to any of these evangelism routes: /why-jesus (Why Jesus?), /how-to-begin (How to Begin), /assurance-next-steps (Assurance & Next Steps), /connect (Ready to Connect/Connect). This scroll-to-top should trigger on route entry regardless of which internal link initiated navigation (top navigation, in-page links, CTA buttons).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Consider options 1 but with a smooth auto-scroll to top and for (Why Jesus, How to Begin, Assurance & Next Steps, Ready to  Connect"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Navigating to /why-jesus, /how-to-begin, /assurance-next-steps, or /connect results in a smooth scroll to window top (top=0).",
+        "The smooth scroll behavior occurs when clicking the evangelism pages' internal <Link> navigation cards and when using header navigation (where applicable).",
+        "Other routes (e.g., /feed, /submit-testimony, /peace-with-god) do not gain new forced scroll-to-top behavior as part of this change."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not edit frontend immutable paths listed in SYSTEM_CONTEXT.frontend.immutablePaths.",
+    "Keep changes limited to frontend routing/page components; no backend changes are required for this request."
+  ],
+  "nonGoals": [
+    "Do not implement scroll-to-top for all routes globally (only the specified evangelism pages).",
+    "Do not change evangelism page content, layout, or add new evangelism pages."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
