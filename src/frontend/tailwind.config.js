@@ -76,6 +76,7 @@ export default {
                 xs: '0 1px 2px 0 rgba(0,0,0,0.05)'
             },
             fontFamily: {
+                sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
                 serif: ['Georgia', 'Cambria', 'Times New Roman', 'serif'],
             },
             keyframes: {

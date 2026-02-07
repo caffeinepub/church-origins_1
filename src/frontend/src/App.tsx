@@ -15,6 +15,22 @@ import WhyJesusPage from './pages/WhyJesusPage';
 import HowToBeginPage from './pages/HowToBeginPage';
 import AssuranceNextStepsPage from './pages/AssuranceNextStepsPage';
 import ConnectPage from './pages/ConnectPage';
+import TopicsQuestionsIndexPage from './pages/TopicsQuestionsIndexPage';
+import WhoIsGodPage from './pages/evangelism/topics-questions/topics/WhoIsGodPage';
+import WhatIsSinPage from './pages/evangelism/topics-questions/topics/WhatIsSinPage';
+import WhyDidJesusDiePage from './pages/evangelism/topics-questions/topics/WhyDidJesusDiePage';
+import WhatIsFaithPage from './pages/evangelism/topics-questions/topics/WhatIsFaithPage';
+import WhatIsRepentancePage from './pages/evangelism/topics-questions/topics/WhatIsRepentancePage';
+import WhatIsTheGospelPage from './pages/evangelism/topics-questions/topics/WhatIsTheGospelPage';
+import WhatIsSalvationPage from './pages/evangelism/topics-questions/topics/WhatIsSalvationPage';
+import WhatIsTheChurchPage from './pages/evangelism/topics-questions/topics/WhatIsTheChurchPage';
+import WhatIsBaptismPage from './pages/evangelism/topics-questions/topics/WhatIsBaptismPage';
+import WhatIsPrayerPage from './pages/evangelism/topics-questions/topics/WhatIsPrayerPage';
+import HowToReadTheBiblePage from './pages/evangelism/topics-questions/topics/HowToReadTheBiblePage';
+import WhatHappensAfterDeathPage from './pages/evangelism/topics-questions/topics/WhatHappensAfterDeathPage';
+import HowToShareYourFaithPage from './pages/evangelism/topics-questions/topics/HowToShareYourFaithPage';
+import PeaceWithGodStepsIntroPage from './pages/PeaceWithGodStepsIntroPage';
+import PeaceWithGodStepsLongPage from './pages/PeaceWithGodStepsLongPage';
 import AuthGate from './components/AuthGate';
 import AppLayout from './components/layout/AppLayout';
 import { Loader2 } from 'lucide-react';
@@ -101,6 +117,102 @@ const connectRoute = createRoute({
   component: ConnectPage,
 });
 
+const topicsQuestionsIndexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions',
+  component: TopicsQuestionsIndexPage,
+});
+
+const whoIsGodRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/who-is-god',
+  component: WhoIsGodPage,
+});
+
+const whatIsSinRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/what-is-sin',
+  component: WhatIsSinPage,
+});
+
+const whyDidJesusDieRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/why-did-jesus-die',
+  component: WhyDidJesusDiePage,
+});
+
+const whatIsFaithRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/what-is-faith',
+  component: WhatIsFaithPage,
+});
+
+const whatIsRepentanceRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/what-is-repentance',
+  component: WhatIsRepentancePage,
+});
+
+const whatIsTheGospelRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/what-is-the-gospel',
+  component: WhatIsTheGospelPage,
+});
+
+const whatIsSalvationRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/what-is-salvation',
+  component: WhatIsSalvationPage,
+});
+
+const whatIsTheChurchRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/what-is-the-church',
+  component: WhatIsTheChurchPage,
+});
+
+const whatIsBaptismRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/what-is-baptism',
+  component: WhatIsBaptismPage,
+});
+
+const whatIsPrayerRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/what-is-prayer',
+  component: WhatIsPrayerPage,
+});
+
+const howToReadTheBibleRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/how-to-read-the-bible',
+  component: HowToReadTheBiblePage,
+});
+
+const whatHappensAfterDeathRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/what-happens-after-death',
+  component: WhatHappensAfterDeathPage,
+});
+
+const howToShareYourFaithRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/topics-questions/how-to-share-your-faith',
+  component: HowToShareYourFaithPage,
+});
+
+const peaceWithGodStepsIntroRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/peace-with-god-steps-intro',
+  component: PeaceWithGodStepsIntroPage,
+});
+
+const peaceWithGodStepsLongRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/peace-with-god-steps',
+  component: PeaceWithGodStepsLongPage,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   onboardingRoute,
@@ -113,6 +225,22 @@ const routeTree = rootRoute.addChildren([
   howToBeginRoute,
   assuranceNextStepsRoute,
   connectRoute,
+  topicsQuestionsIndexRoute,
+  whoIsGodRoute,
+  whatIsSinRoute,
+  whyDidJesusDieRoute,
+  whatIsFaithRoute,
+  whatIsRepentanceRoute,
+  whatIsTheGospelRoute,
+  whatIsSalvationRoute,
+  whatIsTheChurchRoute,
+  whatIsBaptismRoute,
+  whatIsPrayerRoute,
+  howToReadTheBibleRoute,
+  whatHappensAfterDeathRoute,
+  howToShareYourFaithRoute,
+  peaceWithGodStepsIntroRoute,
+  peaceWithGodStepsLongRoute,
 ]);
 
 const router = createRouter({ routeTree });

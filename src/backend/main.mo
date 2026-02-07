@@ -8,9 +8,9 @@ import Runtime "mo:core/Runtime";
 import Time "mo:core/Time";
 import Int "mo:core/Int";
 import Nat "mo:core/Nat";
+import Array "mo:core/Array";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
-
 
 // (with { migration = Migration.run })
 
@@ -19,11 +19,10 @@ actor {
     public type State = {
       #pendingModeration;
       #approved;
-      #rejected : Text; // Rejection reason
+      #rejected : Text;
     };
   };
 
-  // Types and Data Structures
   public type UserProfile = {
     name : Text;
     lifeSituation : Text;
@@ -81,7 +80,6 @@ actor {
     references : [Text];
   };
 
-  // Data Stores
   let userProfiles = Map.empty<Principal, UserProfile>();
   let testimonies = Map.empty<Principal, Testimony>();
   let scriptureEntries = Map.empty<Text, ScriptureEntry>();
@@ -98,7 +96,6 @@ actor {
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
 
-  // Profile Management - Per instructions
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can view profiles");
@@ -120,7 +117,6 @@ actor {
     userProfiles.add(caller, profile);
   };
 
-  // Legacy profile function for backward compatibility
   public shared ({ caller }) func createOrUpdateUserProfile(profile : UserProfile) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can save profiles");
@@ -128,7 +124,6 @@ actor {
     userProfiles.add(caller, profile);
   };
 
-  // Testimony Management
   public shared ({ caller }) func submitTestimony(
     content : Text,
     labels : [Text],
@@ -187,7 +182,6 @@ actor {
     };
   };
 
-  // Scripture and Reflection Management
   public shared ({ caller }) func createScriptureEntry(
     text : Text,
     motivation : Text,
@@ -226,7 +220,6 @@ actor {
     discernmentReflections.add(content, reflection);
   };
 
-  // Query functions - accessible to all authenticated users
   public query ({ caller }) func getDailyFeed() : async ([ScriptureEntry], [DiscernmentReflection], [Testimony]) {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can view daily feed");
@@ -245,6 +238,9 @@ actor {
   };
 
   public query ({ caller }) func getApprovedTestimonies() : async [Testimony] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view testimonies");
+    };
     testimonies.values().toArray().filter(
       func(t) {
         switch (t.state) {
@@ -256,14 +252,19 @@ actor {
   };
 
   public query ({ caller }) func getScriptureEntries() : async [ScriptureEntry] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view scripture entries");
+    };
     scriptureEntries.values().toArray();
   };
 
   public query ({ caller }) func getDiscernmentReflections() : async [DiscernmentReflection] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view reflections");
+    };
     discernmentReflections.values().toArray();
   };
 
-  // Social Feed Functions
   public shared ({ caller }) func createPost(content : Text, references : [Text]) : async Nat {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can create posts");
@@ -287,6 +288,9 @@ actor {
   };
 
   public query ({ caller }) func getFeed(limit : Nat, offset : Nat) : async [FeedItem] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view feed");
+    };
     let allItems = feedItems.values().toArray();
     let sorted = allItems.sort(
       func(a, b) {
@@ -334,7 +338,6 @@ actor {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can add comments");
     };
-    // Only system/admin can mark as agent reply
     let actualIsAgentReply = if (isAgentReply) {
       AccessControl.isAdmin(accessControlState, caller);
     } else {
@@ -388,7 +391,6 @@ actor {
     };
   };
 
-  // Follow/Unfollow Functions
   public shared ({ caller }) func followUser(userToFollow : Principal) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can follow others");
@@ -417,6 +419,9 @@ actor {
   };
 
   public query ({ caller }) func getFollowersCount(user : Principal) : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view follower counts");
+    };
     switch (followerRelationships.get(user)) {
       case (null) { 0 };
       case (?followers) { followers.size() };
@@ -424,6 +429,9 @@ actor {
   };
 
   public query ({ caller }) func getFollowingCount(user : Principal) : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view following counts");
+    };
     var count = 0;
     for ((followed, followers) in followerRelationships.entries()) {
       if (followers.contains(user)) {
@@ -433,7 +441,6 @@ actor {
     count;
   };
 
-  // AI Agent Functions
   public shared ({ caller }) func createAgentPost(content : Text, references : [Text]) : async Nat {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can create agent posts");
@@ -457,6 +464,9 @@ actor {
   };
 
   public query ({ caller }) func getLatestAgentPost() : async ?FeedItem {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view agent posts");
+    };
     var latest : ?FeedItem = null;
     var latestTime : Int = 0;
     for (item in feedItems.values()) {
@@ -505,8 +515,10 @@ actor {
     };
   };
 
-  // Scripture Retrieval with Licensing
   public query ({ caller }) func getScriptureByTranslation(translation : Text) : async ?[ScriptureEntry] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view scripture entries");
+    };
     let filtered = scriptureEntries.values().toArray();
     if (filtered.size() > 0) {
       ?filtered;
@@ -516,6 +528,9 @@ actor {
   };
 
   public query ({ caller }) func getAvailableTranslations() : async [Text] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view available translations");
+    };
     ["NIV", "NKJV", "ESV"];
   };
 };

@@ -8,10 +8,6 @@ interface AppLayoutProps {
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <div className="min-h-screen bg-background relative">
-      <div
-        className="fixed inset-0 bg-cover bg-center opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: 'url(/assets/generated/app-background-texture.dim_1920x1080.png)' }}
-      />
       <div className="relative z-10">
         <AppHeader />
         <main className="container mx-auto px-4 py-8 max-w-4xl">

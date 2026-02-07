@@ -1,26 +1,36 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Smooth scroll-to-top on specific evangelism route entry",
+  "title": "Use uploaded logo in header (left) at medium size",
   "requirements": [
     {
-      "id": "REQ-7",
-      "summary": "Add smooth auto-scroll to window top when entering /why-jesus, /how-to-begin, /assurance-next-steps, or /connect, without affecting other routes.",
+      "id": "REQ-1",
+      "summary": "Add uploaded logo image to frontend static assets so it can be served by URL at runtime.",
       "acceptanceCriteria": [
-        "Navigating to /why-jesus, /how-to-begin, /assurance-next-steps, or /connect results in a smooth scroll to window top (top=0).",
-        "The smooth scroll behavior occurs when clicking the evangelism pages' internal <Link> navigation cards and when using header navigation (where applicable).",
-        "Other routes (e.g., /feed, /submit-testimony, /peace-with-god) do not gain new forced scroll-to-top behavior as part of this change."
+        "`frontend/public/assets/generated/image-4.png` exists in the repository/build output.",
+        "Visiting `/assets/generated/image-4.png` in the running app returns the image."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useEvangelismScrollToTop.ts",
+          "path": "frontend/public/assets/generated/image-4.png",
           "operation": "create",
-          "description": "Create a small hook that observes the current router location and triggers window.scrollTo({ top: 0, behavior: 'smooth' }) only when the pathname matches the evangelism whitelist: /why-jesus, /how-to-begin, /assurance-next-steps, /connect."
-        },
+          "description": "Add the uploaded image file (image-4.png) to the generated public assets folder so it is served at runtime via `/assets/generated/image-4.png`."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Replace the header logo with the uploaded image and reduce its size to a medium height while preserving aspect ratio and existing click navigation behavior.",
+      "acceptanceCriteria": [
+        "The header renders the logo on the left and it remains clickable (retains existing navigation behavior).",
+        "The logo uses `src=\"/assets/generated/image-4.png\"` and does not appear stretched or cropped.",
+        "On mobile and desktop, the logo height is visibly reduced to a medium size compared to the current header logo sizing, without causing header layout overlap with the center CTA or right-side actions."
+      ],
+      "file_operations": [
         {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/components/layout/AppHeader.tsx",
           "operation": "modify",
-          "description": "Wire the evangelism-only scroll-to-top behavior into the root routing layout (e.g., RootLayout) so it triggers on route entry for the specified evangelism routes, regardless of whether navigation originated from header nav or in-page <Link> cards, and does not run for other routes."
+          "description": "Update the existing left-side header logo <img> to use `src=\"/assets/generated/image-4.png\"`, keep `w-auto` + `object-contain` to preserve aspect ratio, and adjust Tailwind height classes to a medium size smaller than the current `h-16 sm:h-20 md:h-24` (without changing the logo click handler, auth logic, or routing behavior)."
         }
       ]
     }

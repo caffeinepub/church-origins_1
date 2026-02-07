@@ -1,9 +1,15 @@
 import { ReactNode } from 'react';
 
+interface HeroOverride {
+  src: string;
+  alt: string;
+}
+
 interface EvangelismPageShellProps {
   title: string;
   subtitle?: string;
   showHero?: boolean;
+  heroOverride?: HeroOverride;
   children: ReactNode;
 }
 
@@ -11,15 +17,19 @@ export default function EvangelismPageShell({
   title,
   subtitle,
   showHero = false,
+  heroOverride,
   children,
 }: EvangelismPageShellProps) {
+  const heroSrc = heroOverride?.src || '/assets/generated/evangelism-hero.dim_1600x600.png';
+  const heroAlt = heroOverride?.alt || 'Church Origins Faith Resources';
+
   return (
     <div className="evangelism-page">
       {showHero && (
         <div className="relative w-full h-48 md:h-64 overflow-hidden rounded-lg mb-8">
           <img
-            src="/assets/generated/evangelism-hero.dim_1600x600.png"
-            alt="Church Origins Faith Resources"
+            src={heroSrc}
+            alt={heroAlt}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />

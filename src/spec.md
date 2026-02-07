@@ -1,11 +1,10 @@
 # Specification
 
 ## Summary
-**Goal:** Smoothly auto-scroll to the top when entering specific evangelism pages so users always start at the top of the content.
+**Goal:** Use the user-uploaded logo (`image-4.png`) as the app header logo on the left at a medium size.
 
 **Planned changes:**
-- Add route-entry scroll-to-top behavior (smooth scroll to `top=0`) for `/why-jesus`, `/how-to-begin`, `/assurance-next-steps`, and `/connect`.
-- Ensure the smooth scroll triggers regardless of navigation source (header navigation, in-page links, CTA buttons, internal `<Link>` navigation cards).
-- Limit the behavior strictly to the specified evangelism routes without affecting other routes.
+- Add `image-4.png` to `frontend/public/assets/generated/image-4.png` so it is available at `/assets/generated/image-4.png`.
+- Update `frontend/src/components/layout/AppHeader.tsx` to use `/assets/generated/image-4.png` as the left-side header logo, keeping it clickable and reducing its height to a medium size while preserving aspect ratio (`w-auto` + `object-contain`).
 
-**User-visible outcome:** When navigating to Why Jesus?, How to Begin, Assurance & Next Steps, or Connect, the page smoothly scrolls to the top on entry, no matter which internal link was used.
+**User-visible outcome:** The header shows the new logo on the left at a medium size across mobile and desktop, and clicking it behaves the same as before.

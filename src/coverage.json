@@ -1,26 +1,33 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T21:07:46.275Z",
+  "generatedAt": "2026-02-07T14:49:32.226Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
+    "total": 2,
     "implemented": 1,
     "items": [
       {
-        "id": "REQ-7",
-        "summary": "Implement smooth auto-scroll to the top of the page whenever the user navigates to any of these evangelism routes: /why-jesus (Why Jesus?), /how-to-begin (How to Begin), /assurance-next-steps (Assurance & Next Steps), /connect (Ready to Connect/Connect). This scroll-to-top should trigger on route entry regardless of which internal link initiated navigation (top navigation, in-page links, CTA buttons).",
+        "id": "REQ-1",
+        "summary": "Add the user-uploaded image `image-4.png` to the frontend static assets at `frontend/public/assets/generated/image-4.png` so it can be referenced by URL at runtime.",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/public/assets/generated/image-4.png"
+        ],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Update the app header logo in `frontend/src/components/layout/AppHeader.tsx` to use `/assets/generated/image-4.png`, positioned on the left side of the header, and style it to be medium-sized (smaller than the current `h-16 sm:h-20 md:h-24` sizing) while preserving aspect ratio (`w-auto` + `object-contain`).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useEvangelismScrollToTop.ts",
-          "frontend/src/App.tsx"
+          "frontend/src/components/layout/AppHeader.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useEvangelismScrollToTop.ts",
-          "frontend/src/App.tsx"
+          "frontend/src/components/layout/AppHeader.tsx"
         ]
       }
     ]
@@ -30,8 +37,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
-    "frontend/src/hooks/useEvangelismScrollToTop.ts",
+    "frontend/src/components/layout/AppHeader.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

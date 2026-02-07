@@ -4,6 +4,7 @@ import EvangelismCtaCard from '../components/evangelism/EvangelismCtaCard';
 import { evangelismContent } from './evangelismContent';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
+import { BookOpen } from 'lucide-react';
 
 export default function PeaceWithGodPage() {
   const content = evangelismContent.peaceWithGod;
@@ -13,6 +14,10 @@ export default function PeaceWithGodPage() {
       title={content.title}
       subtitle={content.subtitle}
       showHero={true}
+      heroOverride={{
+        src: '/assets/generated/clear-vision-hero.dim_1600x600.png',
+        alt: 'Clear Vision with God\'s Provision',
+      }}
     >
       <div className="space-y-8">
         <p className="text-lg leading-relaxed text-foreground">
@@ -47,6 +52,29 @@ export default function PeaceWithGodPage() {
             <p className="text-base leading-relaxed">
               {content.churchOriginsConnection.content}
             </p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-accent/40 bg-accent/5">
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <BookOpen className="h-6 w-6 text-primary" />
+              <CardTitle className="text-xl font-serif">
+                Explore More Topics
+              </CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <p className="text-base leading-relaxed mb-4">
+              Have questions about faith, Scripture, or following Christ? Our Topics & Questions section addresses common questions with biblical answers.
+            </p>
+            <Link
+              to="/topics-questions"
+              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+            >
+              Browse All Topics
+              <span className="text-lg">→</span>
+            </Link>
           </CardContent>
         </Card>
 

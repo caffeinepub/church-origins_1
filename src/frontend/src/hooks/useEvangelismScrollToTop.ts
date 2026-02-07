@@ -6,7 +6,15 @@ const EVANGELISM_ROUTES = [
   '/how-to-begin',
   '/assurance-next-steps',
   '/connect',
+  '/topics-questions',
+  '/peace-with-god-steps-intro',
+  '/peace-with-god-steps',
 ];
+
+// Check if path starts with any evangelism route or topics-questions sub-routes
+function isEvangelismRoute(path: string): boolean {
+  return EVANGELISM_ROUTES.some(route => path === route) || path.startsWith('/topics-questions/');
+}
 
 export function useEvangelismScrollToTop() {
   const router = useRouter();
@@ -14,7 +22,7 @@ export function useEvangelismScrollToTop() {
   useEffect(() => {
     const currentPath = router.state.location.pathname;
     
-    if (EVANGELISM_ROUTES.includes(currentPath)) {
+    if (isEvangelismRoute(currentPath)) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [router.state.location.pathname]);
