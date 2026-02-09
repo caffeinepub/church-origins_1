@@ -2,10 +2,12 @@ import { useNavigate } from '@tanstack/react-router';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
 import { Button } from './ui/button';
 import { Loader2, ArrowRight, BookOpen, Users, Heart } from 'lucide-react';
+import { useState } from 'react';
 
 export default function AuthGate() {
   const navigate = useNavigate();
   const { login, loginStatus } = useInternetIdentity();
+  const [imageError, setImageError] = useState(false);
 
   const isLoggingIn = loginStatus === 'logging-in';
 
@@ -16,12 +18,26 @@ export default function AuthGate() {
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col items-center text-center space-y-8">
             {/* Hero Image - Inline above headline */}
-            <div className="w-full max-w-4xl rounded-lg overflow-hidden">
-              <img
-                src="/assets/generated/home-hero.dim_1600x600.jpg"
-                alt="Crown of thorns"
-                className="w-full h-auto object-cover"
-              />
+            <div className="w-full max-w-4xl rounded-lg overflow-hidden bg-gradient-to-b from-background to-muted/20">
+              {!imageError ? (
+                <img
+                  src="/assets/generated/home-hero.dim_1600x600.jpg"
+                  alt="Crown of thorns"
+                  className="w-full h-auto object-contain"
+                  style={{ aspectRatio: '8/3' }}
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <div 
+                  className="w-full bg-gradient-to-br from-muted/40 via-muted/20 to-background flex items-center justify-center"
+                  style={{ aspectRatio: '8/3' }}
+                >
+                  <div className="text-center space-y-3 px-6">
+                    <Heart className="h-16 w-16 text-primary/40 mx-auto" />
+                    <p className="text-sm text-muted-foreground/60">Hero image</p>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Main Headline */}
@@ -145,11 +161,11 @@ export default function AuthGate() {
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>© 2026. Built with</span>
+              <span>© {new Date().getFullYear()}. Built with</span>
               <Heart className="h-4 w-4 text-primary fill-primary" />
               <span>using</span>
               <a
-                href="https://caffeine.ai"
+                href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-foreground hover:text-primary transition-colors font-medium"

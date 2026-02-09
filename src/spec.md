@@ -1,11 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Replace existing hero images with edited versions of the uploaded photos and add an additional hero image to a non-landing page.
+**Goal:** Set the landing page hero image to the newly uploaded image while keeping the existing public asset URL unchanged.
 
 **Planned changes:**
-- Update the AuthGate (landing) hero to use an edited/cropped version of an uploaded photo while preserving the existing public asset path `/assets/generated/home-hero.dim_1600x600.jpg`.
-- Update the default EvangelismPageShell hero to use an edited/cropped version of an uploaded photo while preserving the existing public asset path `/assets/generated/evangelism-hero.dim_1600x600.png`.
-- Add a new generated hero asset under `/assets/generated/` from the third uploaded photo and wire it into at least one non-landing page via `EvangelismPageShell`’s `heroOverride` (with `showHero` enabled).
+- Ensure `/assets/generated/home-hero.dim_1600x600.jpg` exists in the frontend build output and loads successfully in the deployed app.
+- Replace the contents of `frontend/public/assets/generated/home-hero.dim_1600x600.jpg` with a 1600×600 JPG version derived from `image-8.png`, without changing the `src` URL referenced by `frontend/src/components/AuthGate.tsx`.
+- Preserve the current hero-image load-error fallback behavior in `AuthGate.tsx` to keep layout stability if the image fails to load.
 
-**User-visible outcome:** The landing page and evangelism pages display new hero photos without broken images, and at least one additional non-landing page shows a different hero image from the third uploaded photo.
+**User-visible outcome:** The landing page displays the new hero image reliably, and if the image fails to load, the existing placeholder/fallback still keeps the layout stable.

@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-replace-the-existing-landing-authgate-hero-image-with-an-edited-cropped-version-of-the-uploaded-photos-keeping-the-same-public-path-currently-used-by-the-app-assets-generated-home-hero-dim-1600x600-jpg",
-      "featureTitle": "Replace the existing landing (AuthGate) hero image with an edited/cropped version of the uploaded photos, keeping the same public path currently used by the app (\"/assets/generated/home-hero.dim_1600x600.jpg\").",
+      "featureId": "feature-ensure-the-landing-page-hero-image-referenced-by-frontend-src-components-authgate-tsx-at-assets-generated-home-hero-dim-1600x600-jpg-exists-as-a-static-asset-in-the-frontend-build-output-and-loads-successfully-in-the-deployed-app",
+      "featureTitle": "Ensure the landing-page hero image referenced by `frontend/src/components/AuthGate.tsx` at `/assets/generated/home-hero.dim_1600x600.jpg` exists as a static asset in the frontend build output and loads successfully in the deployed app.",
       "files": [],
       "components": [
         "authorization@4.0.0",
@@ -19,8 +19,8 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-replace-the-default-evangelismpageshell-hero-image-with-an-edited-cropped-version-of-the-uploaded-photos-keeping-the-same-public-path-currently-used-by-the-app-assets-generated-evangelism-hero-dim-1600x600-png",
-      "featureTitle": "Replace the default EvangelismPageShell hero image with an edited/cropped version of the uploaded photos, keeping the same public path currently used by the app (\"/assets/generated/evangelism-hero.dim_1600x600.png\").",
+      "featureId": "feature-update-the-hero-image-file-content-to-use-the-newly-uploaded-image-image-8-png-while-keeping-the-public-url-path-unchanged-assets-generated-home-hero-dim-1600x600-jpg",
+      "featureTitle": "Update the hero image file content to use the newly uploaded image (`image-8.png`) while keeping the public URL path unchanged (`/assets/generated/home-hero.dim_1600x600.jpg`).",
       "files": [],
       "components": [
         "authorization@4.0.0",
@@ -32,25 +32,6 @@
       ],
       "testIds": [
         "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-the-third-uploaded-image-as-an-additional-hero-image-used-on-at-least-one-non-landing-page-by-creating-a-new-static-asset-in-the-public-assets-folder-and-wiring-it-into-a-page-via-evangelismpageshell-s-herooverride-e-g-enable-showhero-on-topicsquestionsindexpage-and-set-herooverride-to-the-new-asset",
-      "featureTitle": "Add the third uploaded image as an additional hero image used on at least one non-landing page by creating a new static asset in the public assets folder and wiring it into a page via EvangelismPageShell's heroOverride (e.g., enable showHero on TopicsQuestionsIndexPage and set heroOverride to the new asset).",
-      "files": [
-        "frontend/src/pages/TopicsQuestionsIndexPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
       ],
       "confidence": "high"
     }

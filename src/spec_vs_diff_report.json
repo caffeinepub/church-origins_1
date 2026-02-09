@@ -1,56 +1,53 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-09T18:19:56.767Z",
-  "summary": "Only REQ-3 is partially addressed by wiring a new heroOverride on TopicsQuestionsIndexPage, but the required new static asset under /assets/generated/ is not added in the diff. REQ-1 and REQ-2 (replacing existing hero images at their current public paths) are not implemented in the shown changes.",
+  "generatedAt": "2026-02-09T19:01:16.005Z",
+  "summary": "The diff does not show the required static hero image asset being added/updated at the mandated public path, nor any verifiable changes in `AuthGate.tsx` to preserve existing fallback behavior. Only a metadata/state file and a frontend summaries file were modified, which is insufficient evidence that REQ-1/2/3 were implemented.",
   "missing_requirements": [
     {
       "id": "REQ-1",
-      "requirement": "Replace the existing landing (AuthGate) hero image with an edited/cropped version of the uploaded photo, keeping the same public path \"/assets/generated/home-hero.dim_1600x600.jpg\".",
-      "reason": "No changes shown to AuthGate and no new/modified public asset file is included in the diff to replace the image at the required path.",
+      "requirement": "Ensure the landing-page hero image at `/assets/generated/home-hero.dim_1600x600.jpg` exists as a static asset in the frontend build output and loads successfully in the deployed app.",
+      "reason": "The diff shows no added/modified static asset under `frontend/public/assets/generated/` (no `home-hero.dim_1600x600.jpg` file change is present). Without the asset being added/updated, there is no evidence the URL will return HTTP 200 in deployment.",
       "evidence": [
-        "frontend-file-summaries.txt",
-        "frontend/src/pages/TopicsQuestionsIndexPage.tsx"
+        "<file-diff>: Added: 0, Modified: 2 (only `frontend-file-summaries.txt`, `project_state.json`)"
       ]
     },
     {
       "id": "REQ-2",
-      "requirement": "Replace the default EvangelismPageShell hero image with an edited/cropped version of the uploaded photo, keeping the same public path \"/assets/generated/evangelism-hero.dim_1600x600.png\".",
-      "reason": "No changes shown to EvangelismPageShell and no new/modified public asset file is included in the diff to replace the image at the required path.",
+      "requirement": "Update the hero image file content to use `image-8.png` while keeping the public URL path unchanged (`/assets/generated/home-hero.dim_1600x600.jpg`).",
+      "reason": "No evidence in the diff that `frontend/public/assets/generated/home-hero.dim_1600x600.jpg` was created/updated, nor that it is a 1600×600 JPG derived from `image-8.png`.",
       "evidence": [
-        "frontend/src/pages/TopicsQuestionsIndexPage.tsx",
-        "frontend-file-summaries.txt"
+        "<file-diff>: no changes shown for `frontend/public/assets/generated/home-hero.dim_1600x600.jpg`"
       ]
     },
     {
       "id": "REQ-3",
-      "requirement": "Create a new static hero asset under \"/assets/generated/\" for the third uploaded image and use it on at least one non-landing page via EvangelismPageShell heroOverride.",
-      "reason": "The page wiring is present (heroOverride points to \"/assets/generated/topics-hero.dim_1600x600.jpg\"), but the diff shows no added/modified static asset file (Added: 0) to ensure the image is actually served and loads without errors.",
+      "requirement": "Keep the existing landing-page hero image load-error fallback behavior in `frontend/src/components/AuthGate.tsx` so layout remains stable if the hero image fails to load.",
+      "reason": "The diff does not include the actual contents/patch for `frontend/src/components/AuthGate.tsx`, only a high-level mention inside `frontend-file-summaries.txt`. This is not sufficient evidence that fallback behavior was preserved (or unchanged).",
       "evidence": [
-        "frontend/src/pages/TopicsQuestionsIndexPage.tsx"
+        "frontend-file-summaries.txt (mentions `frontend/src/components/AuthGate.tsx` behavior, but no actual code diff is provided)"
       ]
     }
   ],
   "hallucinated_features": [
     {
-      "description": "Added a slug-to-route mapping (\"Map slugs to explicit route paths for type safety\") and changed navigation to use it.",
-      "reason": "This refactor is not requested by any of REQ-1/2/3, which focus only on hero image replacement and wiring a new hero image.",
+      "description": "Added/updated app routes and multiple new frontend features (e.g., Faith Resources route, smooth scroll-to-top behavior, layout/header/theme changes) unrelated to setting the landing-page hero image.",
+      "reason": "The BuildRequest is narrowly scoped to ensuring a specific hero image asset exists/updates without changing layout/CTA behavior or other frontend areas; the diff summary text describes a wide set of unrelated UI/routing changes.",
       "evidence": [
-        "frontend/src/pages/TopicsQuestionsIndexPage.tsx"
+        "frontend-file-summaries.txt (entries for `frontend/src/App.tsx`, `frontend/src/components/layout/AppLayout.tsx`, `frontend/src/components/layout/AppHeader.tsx`, `frontend/src/index.css`, `frontend/tailwind.config.js`, etc.)"
       ]
     },
     {
-      "description": "Updated project tracking metadata (project_state.json) marking multiple feature requests as pending.",
-      "reason": "The BuildRequest does not ask for changes to project tracking files; it requests only frontend image/asset updates and wiring.",
+      "description": "Introduced/updated `project_state.json` feature request tracking entries (AR-1..AR-4).",
+      "reason": "Maintaining a `project_state.json` tracker is not part of the BuildRequest requirements or acceptance criteria; it is extra implementation not requested.",
       "evidence": [
         "project_state.json"
       ]
     }
   ],
-  "confidence": 0.74,
+  "confidence": 0.62,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/pages/TopicsQuestionsIndexPage.tsx",
     "project_state.json"
   ]
 }
