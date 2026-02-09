@@ -1,56 +1,84 @@
 {
   "kind": "build_request",
-  "title": "Use uploaded logo in header (left) at medium size",
+  "title": "Replace hero images with uploaded photos across pages",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Add the user-uploaded image `image-4.png` to the frontend static assets at `frontend/public/assets/generated/image-4.png` so it can be referenced by URL at runtime.",
+      "text": "Replace the existing landing (AuthGate) hero image with an edited/cropped version of the uploaded photos, keeping the same public path currently used by the app (\"/assets/generated/home-hero.dim_1600x600.jpg\").",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages"
+          "msg-1"
         ],
         "quotes": [
-          "The user has uploaded 1 image(s): image-4.png.",
-          "Put this logo in the Header on the left, Medium sized"
+          "Add these on the different pages and replace the existing one too"
         ]
       },
       "acceptanceCriteria": [
-        "`frontend/public/assets/generated/image-4.png` exists in the repository/build output.",
-        "Visiting `/assets/generated/image-4.png` in the running app returns the image."
+        "AuthGate renders the hero image from /assets/generated/home-hero.dim_1600x600.jpg (no broken images)",
+        "The previous hero image is no longer shown anywhere the AuthGate hero appears"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Update the app header logo in `frontend/src/components/layout/AppHeader.tsx` to use `/assets/generated/image-4.png`, positioned on the left side of the header, and style it to be medium-sized (smaller than the current `h-16 sm:h-20 md:h-24` sizing) while preserving aspect ratio (`w-auto` + `object-contain`).",
+      "text": "Replace the default EvangelismPageShell hero image with an edited/cropped version of the uploaded photos, keeping the same public path currently used by the app (\"/assets/generated/evangelism-hero.dim_1600x600.png\").",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages"
+          "msg-1"
         ],
         "quotes": [
-          "Put this logo in the Header on the left, Medium sized",
-          "Build"
+          "Add these on the different pages and replace the existing one too"
         ]
       },
       "acceptanceCriteria": [
-        "The header renders the logo on the left and it remains clickable (retains existing navigation behavior).",
-        "The logo uses `src=\"/assets/generated/image-4.png\"` and does not appear stretched or cropped.",
-        "On mobile and desktop, the logo height is visibly reduced to a medium size compared to the current header logo sizing, without causing header layout overlap with the center CTA or right-side actions."
+        "EvangelismPageShell renders the hero image from /assets/generated/evangelism-hero.dim_1600x600.png when showHero={true} and no heroOverride is provided",
+        "The previous evangelism hero image is no longer shown anywhere the default evangelism hero appears"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Add the third uploaded image as an additional hero image used on at least one non-landing page by creating a new static asset in the public assets folder and wiring it into a page via EvangelismPageShell's heroOverride (e.g., enable showHero on TopicsQuestionsIndexPage and set heroOverride to the new asset).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Add these on the different pages and replace the existing one too"
+        ]
+      },
+      "acceptanceCriteria": [
+        "At least one additional page (besides AuthGate and the default EvangelismPageShell hero) displays the third uploaded image as a hero image",
+        "The new hero asset is served from a stable public path under /assets/generated/ and loads without errors"
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under `frontend/src/components/ui` (compose existing UI components instead).",
-    "Do not change authentication logic or routing behavior tied to the header logo click."
+    "Frontend immutablePaths must not be modified (including frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, and frontend/src/components/ui/*).",
+    "Do not introduce any new backend canisters/services; keep changes frontend-only."
   ],
   "nonGoals": [
-    "Do not change the public landing page (AuthGate) hero logo unless explicitly requested.",
-    "Do not redesign the header layout beyond replacing the logo asset and adjusting its size."
+    "Changing backend data models or Motoko logic.",
+    "Adding new routes or new product features unrelated to placing/replacing the images."
   ],
   "imageRequirements": {
     "required": [],
-    "edits": []
+    "edits": [
+      "Crop/resize for landing hero (pexels-eberhardgross-2310641.jpg > home-hero.dim_1600x600.jpg)",
+      "Crop/resize for evangelism default hero (pexels-8moments-1183099.jpg > evangelism-hero.dim_1600x600.png)",
+      "Crop/resize for an additional hero image (pexels-arnie-chou-304906-1229042.jpg > topics-hero.dim_1600x600.jpg)"
+    ]
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

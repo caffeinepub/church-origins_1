@@ -1,7 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
 import { Button } from './ui/button';
-import { Loader2, ArrowRight, BookOpen, Users, Heart, MessageCircle } from 'lucide-react';
+import { Loader2, ArrowRight, BookOpen, Users, Heart } from 'lucide-react';
 
 export default function AuthGate() {
   const navigate = useNavigate();
@@ -12,15 +12,15 @@ export default function AuthGate() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative px-4 pt-20 pb-32 md:pt-32 md:pb-48">
+      <section className="px-4 pt-20 pb-32 md:pt-32 md:pb-48">
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col items-center text-center space-y-8">
-            {/* Logo */}
-            <div className="mb-4">
+            {/* Hero Image - Inline above headline */}
+            <div className="w-full max-w-4xl rounded-lg overflow-hidden">
               <img
-                src="/assets/generated/still-life-crown-thorns-removebg-preview.png"
-                alt="Church Origins"
-                className="w-auto h-32 md:h-48 lg:h-56 max-w-full object-contain mx-auto"
+                src="/assets/generated/home-hero.dim_1600x600.jpg"
+                alt="Crown of thorns"
+                className="w-full h-auto object-cover"
               />
             </div>
 

@@ -14,10 +14,6 @@ export default function PeaceWithGodPage() {
       title={content.title}
       subtitle={content.subtitle}
       showHero={true}
-      heroOverride={{
-        src: '/assets/generated/clear-vision-hero.dim_1600x600.png',
-        alt: 'Clear Vision with God\'s Provision',
-      }}
     >
       <div className="space-y-8">
         <p className="text-lg leading-relaxed text-foreground">

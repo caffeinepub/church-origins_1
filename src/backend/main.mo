@@ -12,7 +12,7 @@ import Array "mo:core/Array";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 
-// (with { migration = Migration.run })
+// (with { migration = Migration.run})
 
 actor {
   module Testimony {
@@ -333,7 +333,7 @@ actor {
     itemId : Nat,
     content : Text,
     references : [Text],
-    isAgentReply : Bool,
+    isAgentReply : Bool
   ) : async Nat {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can add comments");
@@ -486,7 +486,7 @@ actor {
   public shared ({ caller }) func createAgentResponse(
     originalMessage : Text,
     agentReply : Text,
-    references : [Text],
+    references : [Text]
   ) : async () {
     if (not (AccessControl.hasPermission(accessControlState, caller, #admin))) {
       Runtime.trap("Unauthorized: Only admins can create agent responses");

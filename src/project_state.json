@@ -1,16 +1,33 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Website update: place the uploaded logo in the site header (left) at medium size.",
+  "summary": "New project",
   "architectural_notes": [],
   "known_issues": [],
   "isFixRequest": false,
+  "imageRequirements": "## Edit Images\n- Crop/resize for landing hero (pexels-eberhardgross-2310641.jpg > home-hero.dim_1600x600.jpg)\n- Crop/resize for evangelism default hero (pexels-8moments-1183099.jpg > evangelism-hero.dim_1600x600.png)\n- Crop/resize for an additional hero image (pexels-arnie-chou-304906-1229042.jpg > topics-hero.dim_1600x600.jpg)",
   "existing_features": [
     {
-      "id": "feature-update-the-app-header-logo-in-frontend-src-components-layout-appheader-tsx-to-use-assets-generated-image-4-png-positioned-on-the-left-side-of-the-header-and-style-it-to-be-medium-sized-smaller-than-the-current-h-16-sm-h-20-md-h-24-sizing-while-preserving-aspect-ratio-w-auto-object-contain",
-      "title": "Update the app header logo in `frontend/src/components/layout/AppHeader.tsx` to use `/assets/generated/image-4.png`, positioned on the left side of the header, and style it to be medium-sized (smaller than the current `h-16 sm:h-20 md:h-24` sizing) while preserving aspect ratio (`w-auto` + `object-contain`).",
+      "id": "feature-replace-the-existing-landing-authgate-hero-image-with-an-edited-cropped-version-of-the-uploaded-photos-keeping-the-same-public-path-currently-used-by-the-app-assets-generated-home-hero-dim-1600x600-jpg",
+      "title": "Replace the existing landing (AuthGate) hero image with an edited/cropped version of the uploaded photos, keeping the same public path currently used by the app (\"/assets/generated/home-hero.dim_1600x600.jpg\").",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-default-evangelismpageshell-hero-image-with-an-edited-cropped-version-of-the-uploaded-photos-keeping-the-same-public-path-currently-used-by-the-app-assets-generated-evangelism-hero-dim-1600x600-png",
+      "title": "Replace the default EvangelismPageShell hero image with an edited/cropped version of the uploaded photos, keeping the same public path currently used by the app (\"/assets/generated/evangelism-hero.dim_1600x600.png\").",
       "reqIds": [
         "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-third-uploaded-image-as-an-additional-hero-image-used-on-at-least-one-non-landing-page-by-creating-a-new-static-asset-in-the-public-assets-folder-and-wiring-it-into-a-page-via-evangelismpageshell-s-herooverride-e-g-enable-showhero-on-topicsquestionsindexpage-and-set-herooverride-to-the-new-asset",
+      "title": "Add the third uploaded image as an additional hero image used on at least one non-landing page by creating a new static asset in the public assets folder and wiring it into a page via EvangelismPageShell's heroOverride (e.g., enable showHero on TopicsQuestionsIndexPage and set heroOverride to the new asset).",
+      "reqIds": [
+        "REQ-3"
       ],
       "version": 1
     }
@@ -18,20 +35,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Place the newly uploaded logo in the header on the left, sized medium.",
+      "summary": "Add the new header buttons/components to the different pages and replace the existing one",
       "reqIds": [],
-      "status": "in_progress"
-    },
-    {
-      "id": "AR-2",
-      "summary": "Add the user-uploaded image `image-4.png` to the frontend static assets at `frontend/public/assets/generated/image-4.png` so it can be referenced by URL at runtime.",
-      "reqIds": [
-        "REQ-1"
-      ],
       "status": "pending"
     }
   ],
-  "projectName": "Use uploaded logo in header (left) at medium size",
+  "projectName": "Replace hero images with uploaded photos across pages",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

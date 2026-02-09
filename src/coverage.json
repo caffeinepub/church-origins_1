@@ -1,33 +1,50 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-07T14:49:32.226Z",
+  "generatedAt": "2026-02-09T18:19:56.770Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
-    "implemented": 1,
+    "total": 3,
+    "implemented": 3,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Add the user-uploaded image `image-4.png` to the frontend static assets at `frontend/public/assets/generated/image-4.png` so it can be referenced by URL at runtime.",
-        "status": "missing",
+        "summary": "Replace the existing landing (AuthGate) hero image with an edited/cropped version of the uploaded photos, keeping the same public path currently used by the app (\"/assets/generated/home-hero.dim_1600x600.jpg\").",
+        "status": "implemented",
         "plannedFiles": [
-          "frontend/public/assets/generated/image-4.png"
+          "frontend/public/assets/generated/home-hero.dim_1600x600.jpg",
+          "frontend/src/components/AuthGate.tsx"
         ],
-        "matchedFiles": []
+        "matchedFiles": [
+          "frontend/public/assets/generated/home-hero.dim_1600x600.jpg"
+        ]
       },
       {
         "id": "REQ-2",
-        "summary": "Update the app header logo in `frontend/src/components/layout/AppHeader.tsx` to use `/assets/generated/image-4.png`, positioned on the left side of the header, and style it to be medium-sized (smaller than the current `h-16 sm:h-20 md:h-24` sizing) while preserving aspect ratio (`w-auto` + `object-contain`).",
+        "summary": "Replace the default EvangelismPageShell hero image with an edited/cropped version of the uploaded photos, keeping the same public path currently used by the app (\"/assets/generated/evangelism-hero.dim_1600x600.png\").",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/layout/AppHeader.tsx"
+          "frontend/public/assets/generated/evangelism-hero.dim_1600x600.png",
+          "frontend/src/components/evangelism/EvangelismPageShell.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/layout/AppHeader.tsx"
+          "frontend/public/assets/generated/evangelism-hero.dim_1600x600.png"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Add the third uploaded image as an additional hero image used on at least one non-landing page by creating a new static asset in the public assets folder and wiring it into a page via EvangelismPageShell's heroOverride (e.g., enable showHero on TopicsQuestionsIndexPage and set heroOverride to the new asset).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/assets/generated/topics-hero.dim_1600x600.jpg",
+          "frontend/src/pages/TopicsQuestionsIndexPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/public/assets/generated/topics-hero.dim_1600x600.jpg",
+          "frontend/src/pages/TopicsQuestionsIndexPage.tsx"
         ]
       }
     ]
@@ -37,7 +54,10 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/layout/AppHeader.tsx",
+    "frontend/public/assets/generated/evangelism-hero.dim_1600x600.png",
+    "frontend/public/assets/generated/home-hero.dim_1600x600.jpg",
+    "frontend/public/assets/generated/topics-hero.dim_1600x600.jpg",
+    "frontend/src/pages/TopicsQuestionsIndexPage.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

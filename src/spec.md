@@ -1,10 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Use the user-uploaded logo (`image-4.png`) as the app header logo on the left at a medium size.
+**Goal:** Replace existing hero images with edited versions of the uploaded photos and add an additional hero image to a non-landing page.
 
 **Planned changes:**
-- Add `image-4.png` to `frontend/public/assets/generated/image-4.png` so it is available at `/assets/generated/image-4.png`.
-- Update `frontend/src/components/layout/AppHeader.tsx` to use `/assets/generated/image-4.png` as the left-side header logo, keeping it clickable and reducing its height to a medium size while preserving aspect ratio (`w-auto` + `object-contain`).
+- Update the AuthGate (landing) hero to use an edited/cropped version of an uploaded photo while preserving the existing public asset path `/assets/generated/home-hero.dim_1600x600.jpg`.
+- Update the default EvangelismPageShell hero to use an edited/cropped version of an uploaded photo while preserving the existing public asset path `/assets/generated/evangelism-hero.dim_1600x600.png`.
+- Add a new generated hero asset under `/assets/generated/` from the third uploaded photo and wire it into at least one non-landing page via `EvangelismPageShell`’s `heroOverride` (with `showHero` enabled).
 
-**User-visible outcome:** The header shows the new logo on the left at a medium size across mobile and desktop, and clicking it behaves the same as before.
+**User-visible outcome:** The landing page and evangelism pages display new hero photos without broken images, and at least one additional non-landing page shows a different hero image from the third uploaded photo.

@@ -31,6 +31,7 @@ import WhatHappensAfterDeathPage from './pages/evangelism/topics-questions/topic
 import HowToShareYourFaithPage from './pages/evangelism/topics-questions/topics/HowToShareYourFaithPage';
 import PeaceWithGodStepsIntroPage from './pages/PeaceWithGodStepsIntroPage';
 import PeaceWithGodStepsLongPage from './pages/PeaceWithGodStepsLongPage';
+import FaithResourcesPage from './pages/FaithResourcesPage';
 import AuthGate from './components/AuthGate';
 import AppLayout from './components/layout/AppLayout';
 import { Loader2 } from 'lucide-react';
@@ -121,6 +122,12 @@ const topicsQuestionsIndexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/topics-questions',
   component: TopicsQuestionsIndexPage,
+});
+
+const faithResourcesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/faith-resources',
+  component: FaithResourcesPage,
 });
 
 const whoIsGodRoute = createRoute({
@@ -226,6 +233,7 @@ const routeTree = rootRoute.addChildren([
   assuranceNextStepsRoute,
   connectRoute,
   topicsQuestionsIndexRoute,
+  faithResourcesRoute,
   whoIsGodRoute,
   whatIsSinRoute,
   whyDidJesusDieRoute,

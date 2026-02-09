@@ -1,36 +1,65 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Use uploaded logo in header (left) at medium size",
+  "title": "Replace hero images with uploaded photos across pages",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Add uploaded logo image to frontend static assets so it can be served by URL at runtime.",
+      "summary": "Replace the AuthGate landing hero image by updating the existing generated asset while keeping the same public path.",
       "acceptanceCriteria": [
-        "`frontend/public/assets/generated/image-4.png` exists in the repository/build output.",
-        "Visiting `/assets/generated/image-4.png` in the running app returns the image."
+        "AuthGate renders the hero image from /assets/generated/home-hero.dim_1600x600.jpg (no broken images)",
+        "The previous hero image is no longer shown anywhere the AuthGate hero appears"
       ],
       "file_operations": [
         {
-          "path": "frontend/public/assets/generated/image-4.png",
-          "operation": "create",
-          "description": "Add the uploaded image file (image-4.png) to the generated public assets folder so it is served at runtime via `/assets/generated/image-4.png`."
+          "path": "frontend/public/assets/generated/home-hero.dim_1600x600.jpg",
+          "operation": "modify",
+          "description": "Replace the existing image file contents with the edited/cropped version derived from pexels-eberhardgross-2310641.jpg, preserving the exact filename and location so /assets/generated/home-hero.dim_1600x600.jpg continues to resolve."
+        },
+        {
+          "path": "frontend/src/components/AuthGate.tsx",
+          "operation": "modify",
+          "description": "Verify AuthGate continues to reference the hero image at the immutable public path /assets/generated/home-hero.dim_1600x600.jpg and does not reference any prior hero asset."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Replace the header logo with the uploaded image and reduce its size to a medium height while preserving aspect ratio and existing click navigation behavior.",
+      "summary": "Replace the default EvangelismPageShell hero image by updating the existing generated asset while keeping the same public path.",
       "acceptanceCriteria": [
-        "The header renders the logo on the left and it remains clickable (retains existing navigation behavior).",
-        "The logo uses `src=\"/assets/generated/image-4.png\"` and does not appear stretched or cropped.",
-        "On mobile and desktop, the logo height is visibly reduced to a medium size compared to the current header logo sizing, without causing header layout overlap with the center CTA or right-side actions."
+        "EvangelismPageShell renders the hero image from /assets/generated/evangelism-hero.dim_1600x600.png when showHero={true} and no heroOverride is provided",
+        "The previous evangelism hero image is no longer shown anywhere the default evangelism hero appears"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "path": "frontend/public/assets/generated/evangelism-hero.dim_1600x600.png",
           "operation": "modify",
-          "description": "Update the existing left-side header logo <img> to use `src=\"/assets/generated/image-4.png\"`, keep `w-auto` + `object-contain` to preserve aspect ratio, and adjust Tailwind height classes to a medium size smaller than the current `h-16 sm:h-20 md:h-24` (without changing the logo click handler, auth logic, or routing behavior)."
+          "description": "Replace the existing image file contents with the edited/cropped version derived from pexels-8moments-1183099.jpg, preserving the exact filename and location so /assets/generated/evangelism-hero.dim_1600x600.png continues to resolve."
+        },
+        {
+          "path": "frontend/src/components/evangelism/EvangelismPageShell.tsx",
+          "operation": "modify",
+          "description": "Confirm the default heroSrc fallback remains /assets/generated/evangelism-hero.dim_1600x600.png and that the default hero behavior only applies when showHero={true} and no heroOverride is provided."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Add a third static hero asset under /assets/generated/ and display it on at least one non-landing page via EvangelismPageShell heroOverride.",
+      "acceptanceCriteria": [
+        "At least one additional page (besides AuthGate and the default EvangelismPageShell hero) displays the third uploaded image as a hero image",
+        "The new hero asset is served from a stable public path under /assets/generated/ and loads without errors"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/topics-hero.dim_1600x600.jpg",
+          "operation": "create",
+          "description": "Add a new generated hero image by cropping/resizing pexels-arnie-chou-304906-1229042.jpg into the new static asset frontend/public/assets/generated/topics-hero.dim_1600x600.jpg so it is served at /assets/generated/topics-hero.dim_1600x600.jpg."
+        },
+        {
+          "path": "frontend/src/pages/TopicsQuestionsIndexPage.tsx",
+          "operation": "modify",
+          "description": "Enable EvangelismPageShell hero on this page (showHero={true}) and pass heroOverride to use /assets/generated/topics-hero.dim_1600x600.jpg so this third image is displayed as a non-landing hero."
         }
       ]
     }

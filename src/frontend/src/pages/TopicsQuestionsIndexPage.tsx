@@ -27,7 +27,11 @@ export default function TopicsQuestionsIndexPage() {
     <EvangelismPageShell
       title="Topics & Questions"
       subtitle="Exploring essential questions about faith, Scripture, and following Christ"
-      showHero={false}
+      showHero={true}
+      heroOverride={{
+        src: '/assets/generated/topics-hero.dim_1600x600.jpg',
+        alt: 'Topics & Questions - Exploring Faith',
+      }}
     >
       <div className="space-y-8">
         <p className="text-lg leading-relaxed text-foreground">
