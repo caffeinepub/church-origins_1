@@ -2,9 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-ensure-the-landing-page-hero-image-referenced-by-frontend-src-components-authgate-tsx-at-assets-generated-home-hero-dim-1600x600-jpg-exists-as-a-static-asset-in-the-frontend-build-output-and-loads-successfully-in-the-deployed-app",
-      "featureTitle": "Ensure the landing-page hero image referenced by `frontend/src/components/AuthGate.tsx` at `/assets/generated/home-hero.dim_1600x600.jpg` exists as a static asset in the frontend build output and loads successfully in the deployed app.",
-      "files": [],
+      "featureId": "feature-remove-the-hero-image-block-from-the-landing-page-authgate-component-so-the-page-no-longer-renders-any-hero-image-or-hero-image-fallback-placeholder-above-the-main-headline",
+      "featureTitle": "Remove the hero image block from the landing page AuthGate component so the page no longer renders any hero image or hero-image fallback placeholder above the main headline.",
+      "files": [
+        "frontend/src/components/AuthGate.tsx"
+      ],
       "components": [
         "authorization@4.0.0",
         "core-infrastructure@1.0.2",
@@ -19,9 +21,11 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-the-hero-image-file-content-to-use-the-newly-uploaded-image-image-8-png-while-keeping-the-public-url-path-unchanged-assets-generated-home-hero-dim-1600x600-jpg",
-      "featureTitle": "Update the hero image file content to use the newly uploaded image (`image-8.png`) while keeping the public URL path unchanged (`/assets/generated/home-hero.dim_1600x600.jpg`).",
-      "files": [],
+      "featureId": "feature-clean-up-authgate-component-code-after-removing-the-hero-image-by-deleting-unused-state-and-imports-related-to-hero-image-error-handling",
+      "featureTitle": "Clean up AuthGate component code after removing the hero image by deleting unused state and imports related to hero-image error handling.",
+      "files": [
+        "frontend/src/components/AuthGate.tsx"
+      ],
       "components": [
         "authorization@4.0.0",
         "core-infrastructure@1.0.2",

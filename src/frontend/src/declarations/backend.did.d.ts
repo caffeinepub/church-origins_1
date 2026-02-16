@@ -16,6 +16,33 @@ export interface AgentResponse {
   'originalMessage' : string,
   'timestamp' : bigint,
 }
+export interface BibleBook {
+  'id' : bigint,
+  'translationId' : bigint,
+  'name' : string,
+  'abbreviation' : string,
+}
+export interface BibleChapter {
+  'id' : bigint,
+  'bookId' : bigint,
+  'number' : string,
+}
+export interface BibleTranslation {
+  'id' : bigint,
+  'name' : string,
+  'abbreviation' : string,
+}
+export interface BibleVerse {
+  'id' : bigint,
+  'translationId' : bigint,
+  'bookName' : string,
+  'verseNumber' : string,
+  'chapterNumber' : string,
+  'text' : string,
+  'bookId' : bigint,
+  'chapterId' : bigint,
+  'translationName' : string,
+}
 export interface DiscernmentReflection {
   'references' : Array<string>,
   'content' : string,
@@ -35,6 +62,13 @@ export interface FeedItem {
     { 'aiAgentPost' : null } |
     { 'reflection' : null } |
     { 'testimony' : null },
+}
+export interface LastBibleLocation {
+  'translationId' : bigint,
+  'bookId' : bigint,
+  'chapterId' : bigint,
+  'verseId' : [] | [bigint],
+  'scrollAnchor' : [] | [bigint],
 }
 export interface ScriptureEntry {
   'references' : Array<string>,
@@ -86,9 +120,11 @@ export interface _SERVICE {
   >,
   'followUser' : ActorMethod<[Principal], undefined>,
   'getApprovedTestimonies' : ActorMethod<[], Array<Testimony>>,
-  'getAvailableTranslations' : ActorMethod<[], Array<string>>,
+  'getAvailableBibleTranslations' : ActorMethod<[], Array<BibleTranslation>>,
+  'getBooksForTranslation' : ActorMethod<[bigint], Array<BibleBook>>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getChaptersForBook' : ActorMethod<[bigint], Array<BibleChapter>>,
   'getDailyFeed' : ActorMethod<
     [],
     [Array<ScriptureEntry>, Array<DiscernmentReflection>, Array<Testimony>]
@@ -97,6 +133,7 @@ export interface _SERVICE {
   'getFeed' : ActorMethod<[bigint, bigint], Array<FeedItem>>,
   'getFollowersCount' : ActorMethod<[Principal], bigint>,
   'getFollowingCount' : ActorMethod<[Principal], bigint>,
+  'getLastBibleLocation' : ActorMethod<[], [] | [LastBibleLocation]>,
   'getLatestAgentPost' : ActorMethod<[], [] | [FeedItem]>,
   'getResponsesToUser' : ActorMethod<[Principal], Array<AgentResponse>>,
   'getScriptureByTranslation' : ActorMethod<
@@ -105,11 +142,27 @@ export interface _SERVICE {
   >,
   'getScriptureEntries' : ActorMethod<[], Array<ScriptureEntry>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'getVersesForChapter' : ActorMethod<
+    [bigint, bigint, bigint],
+    Array<BibleVerse>
+  >,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'rejectTestimony' : ActorMethod<[Principal, string], undefined>,
   'removeReaction' : ActorMethod<[bigint], undefined>,
   'repostItem' : ActorMethod<[bigint], bigint>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'searchVerse' : ActorMethod<
+    [bigint, bigint, bigint, string],
+    [] | [BibleVerse]
+  >,
+  'setLastBibleLocation' : ActorMethod<
+    [bigint, bigint, bigint, [] | [bigint]],
+    undefined
+  >,
+  'setLastBibleLocationWithScroll' : ActorMethod<
+    [bigint, bigint, bigint, [] | [bigint], [] | [bigint]],
+    undefined
+  >,
   'submitTestimony' : ActorMethod<
     [string, Array<string>, Array<string>, Array<string>],
     undefined

@@ -89,6 +89,17 @@ export class ExternalBlob {
         return this;
     }
 }
+export interface BibleVerse {
+    id: bigint;
+    translationId: bigint;
+    bookName: string;
+    verseNumber: string;
+    chapterNumber: string;
+    text: string;
+    bookId: bigint;
+    chapterId: bigint;
+    translationName: string;
+}
 export interface AgentResponse {
     agentReply: string;
     references: Array<string>;
@@ -102,6 +113,22 @@ export interface ScriptureEntry {
     text: string;
     motivation: string;
 }
+export interface BibleBook {
+    id: bigint;
+    translationId: bigint;
+    name: string;
+    abbreviation: string;
+}
+export interface BibleChapter {
+    id: bigint;
+    bookId: bigint;
+    number: string;
+}
+export interface BibleTranslation {
+    id: bigint;
+    name: string;
+    abbreviation: string;
+}
 export interface FeedItem {
     id: bigint;
     references: Array<string>;
@@ -111,6 +138,13 @@ export interface FeedItem {
     repostCount: bigint;
     timestamp: bigint;
     itemType: Variant_userPost_scriptureEntry_aiAgentPost_reflection_testimony;
+}
+export interface LastBibleLocation {
+    translationId: bigint;
+    bookId: bigint;
+    chapterId: bigint;
+    verseId?: bigint;
+    scrollAnchor?: bigint;
 }
 export interface DiscernmentReflection {
     references: Array<string>;
@@ -168,28 +202,35 @@ export interface backendInterface {
     createScriptureEntry(text: string, motivation: string, labels: Array<string>, references: Array<string>, contentKind: string): Promise<void>;
     followUser(userToFollow: Principal): Promise<void>;
     getApprovedTestimonies(): Promise<Array<Testimony>>;
-    getAvailableTranslations(): Promise<Array<string>>;
+    getAvailableBibleTranslations(): Promise<Array<BibleTranslation>>;
+    getBooksForTranslation(translationId: bigint): Promise<Array<BibleBook>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
+    getChaptersForBook(bookId: bigint): Promise<Array<BibleChapter>>;
     getDailyFeed(): Promise<[Array<ScriptureEntry>, Array<DiscernmentReflection>, Array<Testimony>]>;
     getDiscernmentReflections(): Promise<Array<DiscernmentReflection>>;
     getFeed(limit: bigint, offset: bigint): Promise<Array<FeedItem>>;
     getFollowersCount(user: Principal): Promise<bigint>;
     getFollowingCount(user: Principal): Promise<bigint>;
+    getLastBibleLocation(): Promise<LastBibleLocation | null>;
     getLatestAgentPost(): Promise<FeedItem | null>;
     getResponsesToUser(user: Principal): Promise<Array<AgentResponse>>;
     getScriptureByTranslation(translation: string): Promise<Array<ScriptureEntry> | null>;
     getScriptureEntries(): Promise<Array<ScriptureEntry>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
+    getVersesForChapter(translationId: bigint, bookId: bigint, chapterId: bigint): Promise<Array<BibleVerse>>;
     isCallerAdmin(): Promise<boolean>;
     rejectTestimony(testimonyId: Principal, moderatorNote: string): Promise<void>;
     removeReaction(itemId: bigint): Promise<void>;
     repostItem(itemId: bigint): Promise<bigint>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
+    searchVerse(translationId: bigint, bookId: bigint, chapterId: bigint, verseNumber: string): Promise<BibleVerse | null>;
+    setLastBibleLocation(translationId: bigint, bookId: bigint, chapterId: bigint, verseId: bigint | null): Promise<void>;
+    setLastBibleLocationWithScroll(translationId: bigint, bookId: bigint, chapterId: bigint, verseId: bigint | null, scrollAnchor: bigint | null): Promise<void>;
     submitTestimony(content: string, labels: Array<string>, disclaimers: Array<string>, scriptureReferences: Array<string>): Promise<void>;
     unfollowUser(userToUnfollow: Principal): Promise<void>;
 }
-import type { FeedItem as _FeedItem, ScriptureEntry as _ScriptureEntry, State as _State, Testimony as _Testimony, UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
+import type { BibleVerse as _BibleVerse, FeedItem as _FeedItem, LastBibleLocation as _LastBibleLocation, ScriptureEntry as _ScriptureEntry, State as _State, Testimony as _Testimony, UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
     async _initializeAccessControlWithSecret(arg0: string): Promise<void> {
@@ -374,17 +415,31 @@ export class Backend implements backendInterface {
             return from_candid_vec_n3(this._uploadFile, this._downloadFile, result);
         }
     }
-    async getAvailableTranslations(): Promise<Array<string>> {
+    async getAvailableBibleTranslations(): Promise<Array<BibleTranslation>> {
         if (this.processError) {
             try {
-                const result = await this.actor.getAvailableTranslations();
+                const result = await this.actor.getAvailableBibleTranslations();
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getAvailableTranslations();
+            const result = await this.actor.getAvailableBibleTranslations();
+            return result;
+        }
+    }
+    async getBooksForTranslation(arg0: bigint): Promise<Array<BibleBook>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getBooksForTranslation(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getBooksForTranslation(arg0);
             return result;
         }
     }
@@ -414,6 +469,20 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getCallerUserRole();
             return from_candid_UserRole_n10(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getChaptersForBook(arg0: bigint): Promise<Array<BibleChapter>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getChaptersForBook(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getChaptersForBook(arg0);
+            return result;
         }
     }
     async getDailyFeed(): Promise<[Array<ScriptureEntry>, Array<DiscernmentReflection>, Array<Testimony>]> {
@@ -494,18 +563,32 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async getLatestAgentPost(): Promise<FeedItem | null> {
+    async getLastBibleLocation(): Promise<LastBibleLocation | null> {
         if (this.processError) {
             try {
-                const result = await this.actor.getLatestAgentPost();
+                const result = await this.actor.getLastBibleLocation();
                 return from_candid_opt_n17(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getLatestAgentPost();
+            const result = await this.actor.getLastBibleLocation();
             return from_candid_opt_n17(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getLatestAgentPost(): Promise<FeedItem | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getLatestAgentPost();
+                return from_candid_opt_n20(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getLatestAgentPost();
+            return from_candid_opt_n20(this._uploadFile, this._downloadFile, result);
         }
     }
     async getResponsesToUser(arg0: Principal): Promise<Array<AgentResponse>> {
@@ -526,14 +609,14 @@ export class Backend implements backendInterface {
         if (this.processError) {
             try {
                 const result = await this.actor.getScriptureByTranslation(arg0);
-                return from_candid_opt_n18(this._uploadFile, this._downloadFile, result);
+                return from_candid_opt_n21(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getScriptureByTranslation(arg0);
-            return from_candid_opt_n18(this._uploadFile, this._downloadFile, result);
+            return from_candid_opt_n21(this._uploadFile, this._downloadFile, result);
         }
     }
     async getScriptureEntries(): Promise<Array<ScriptureEntry>> {
@@ -562,6 +645,20 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getUserProfile(arg0);
             return from_candid_opt_n9(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getVersesForChapter(arg0: bigint, arg1: bigint, arg2: bigint): Promise<Array<BibleVerse>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getVersesForChapter(arg0, arg1, arg2);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getVersesForChapter(arg0, arg1, arg2);
+            return result;
         }
     }
     async isCallerAdmin(): Promise<boolean> {
@@ -634,6 +731,48 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async searchVerse(arg0: bigint, arg1: bigint, arg2: bigint, arg3: string): Promise<BibleVerse | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.searchVerse(arg0, arg1, arg2, arg3);
+                return from_candid_opt_n22(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.searchVerse(arg0, arg1, arg2, arg3);
+            return from_candid_opt_n22(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async setLastBibleLocation(arg0: bigint, arg1: bigint, arg2: bigint, arg3: bigint | null): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.setLastBibleLocation(arg0, arg1, arg2, to_candid_opt_n23(this._uploadFile, this._downloadFile, arg3));
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.setLastBibleLocation(arg0, arg1, arg2, to_candid_opt_n23(this._uploadFile, this._downloadFile, arg3));
+            return result;
+        }
+    }
+    async setLastBibleLocationWithScroll(arg0: bigint, arg1: bigint, arg2: bigint, arg3: bigint | null, arg4: bigint | null): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.setLastBibleLocationWithScroll(arg0, arg1, arg2, to_candid_opt_n23(this._uploadFile, this._downloadFile, arg3), to_candid_opt_n23(this._uploadFile, this._downloadFile, arg4));
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.setLastBibleLocationWithScroll(arg0, arg1, arg2, to_candid_opt_n23(this._uploadFile, this._downloadFile, arg3), to_candid_opt_n23(this._uploadFile, this._downloadFile, arg4));
+            return result;
+        }
+    }
     async submitTestimony(arg0: string, arg1: Array<string>, arg2: Array<string>, arg3: Array<string>): Promise<void> {
         if (this.processError) {
             try {
@@ -666,6 +805,9 @@ export class Backend implements backendInterface {
 function from_candid_FeedItem_n13(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _FeedItem): FeedItem {
     return from_candid_record_n14(_uploadFile, _downloadFile, value);
 }
+function from_candid_LastBibleLocation_n18(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _LastBibleLocation): LastBibleLocation {
+    return from_candid_record_n19(_uploadFile, _downloadFile, value);
+}
 function from_candid_State_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _State): State {
     return from_candid_variant_n8(_uploadFile, _downloadFile, value);
 }
@@ -678,10 +820,16 @@ function from_candid_UserRole_n10(_uploadFile: (file: ExternalBlob) => Promise<U
 function from_candid_opt_n15(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [bigint]): bigint | null {
     return value.length === 0 ? null : value[0];
 }
-function from_candid_opt_n17(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_FeedItem]): FeedItem | null {
+function from_candid_opt_n17(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_LastBibleLocation]): LastBibleLocation | null {
+    return value.length === 0 ? null : from_candid_LastBibleLocation_n18(_uploadFile, _downloadFile, value[0]);
+}
+function from_candid_opt_n20(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_FeedItem]): FeedItem | null {
     return value.length === 0 ? null : from_candid_FeedItem_n13(_uploadFile, _downloadFile, value[0]);
 }
-function from_candid_opt_n18(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [Array<_ScriptureEntry>]): Array<ScriptureEntry> | null {
+function from_candid_opt_n21(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [Array<_ScriptureEntry>]): Array<ScriptureEntry> | null {
+    return value.length === 0 ? null : value[0];
+}
+function from_candid_opt_n22(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_BibleVerse]): BibleVerse | null {
     return value.length === 0 ? null : value[0];
 }
 function from_candid_opt_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [string]): string | null {
@@ -728,6 +876,27 @@ function from_candid_record_n14(_uploadFile: (file: ExternalBlob) => Promise<Uin
         repostCount: value.repostCount,
         timestamp: value.timestamp,
         itemType: from_candid_variant_n16(_uploadFile, _downloadFile, value.itemType)
+    };
+}
+function from_candid_record_n19(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    translationId: bigint;
+    bookId: bigint;
+    chapterId: bigint;
+    verseId: [] | [bigint];
+    scrollAnchor: [] | [bigint];
+}): {
+    translationId: bigint;
+    bookId: bigint;
+    chapterId: bigint;
+    verseId?: bigint;
+    scrollAnchor?: bigint;
+} {
+    return {
+        translationId: value.translationId,
+        bookId: value.bookId,
+        chapterId: value.chapterId,
+        verseId: record_opt_to_undefined(from_candid_opt_n15(_uploadFile, _downloadFile, value.verseId)),
+        scrollAnchor: record_opt_to_undefined(from_candid_opt_n15(_uploadFile, _downloadFile, value.scrollAnchor))
     };
 }
 function from_candid_record_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
@@ -814,6 +983,9 @@ function from_candid_vec_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Ar
 }
 function to_candid_UserRole_n1(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): _UserRole {
     return to_candid_variant_n2(_uploadFile, _downloadFile, value);
+}
+function to_candid_opt_n23(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: bigint | null): [] | [bigint] {
+    return value === null ? candid_none() : candid_some(value);
 }
 function to_candid_variant_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): {
     admin: null;

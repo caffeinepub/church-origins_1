@@ -1,11 +1,10 @@
 # Specification
 
 ## Summary
-**Goal:** Set the landing page hero image to the newly uploaded image while keeping the existing public asset URL unchanged.
+**Goal:** Remove the hero image block from the AuthGate (landing) page so no hero image or fallback placeholder appears above the main headline.
 
 **Planned changes:**
-- Ensure `/assets/generated/home-hero.dim_1600x600.jpg` exists in the frontend build output and loads successfully in the deployed app.
-- Replace the contents of `frontend/public/assets/generated/home-hero.dim_1600x600.jpg` with a 1600×600 JPG version derived from `image-8.png`, without changing the `src` URL referenced by `frontend/src/components/AuthGate.tsx`.
-- Preserve the current hero-image load-error fallback behavior in `AuthGate.tsx` to keep layout stability if the image fails to load.
+- Remove the hero image rendering block (and any fallback “Hero image” placeholder UI) from `frontend/src/components/AuthGate.tsx`.
+- Clean up `AuthGate.tsx` by deleting unused imports/state related to hero-image error handling (e.g., `useState`, `imageError/setImageError`) after the hero image is removed.
 
-**User-visible outcome:** The landing page displays the new hero image reliably, and if the image fails to load, the existing placeholder/fallback still keeps the layout stable.
+**User-visible outcome:** The landing page shows no image above the main headline, with a balanced layout and no leftover hero-image placeholder space.

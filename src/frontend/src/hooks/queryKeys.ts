@@ -9,4 +9,14 @@ export const queryKeys = {
   followersCount: (userId: string) => ['followersCount', userId],
   followingCount: (userId: string) => ['followingCount', userId],
   userProfile: (userId: string) => ['userProfile', userId],
+  bibleTranslations: ['bibleTranslations'],
+  bibleBooks: (translationId: bigint | null) => ['bibleBooks', translationId?.toString()],
+  bibleChapters: (bookId: bigint | null) => ['bibleChapters', bookId?.toString()],
+  bibleVerses: (translationId: bigint | null, bookId: bigint | null, chapterId: bigint | null) => [
+    'bibleVerses',
+    translationId?.toString(),
+    bookId?.toString(),
+    chapterId?.toString(),
+  ],
+  bibleLastLocation: ['bibleLastLocation'],
 } as const;

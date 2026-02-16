@@ -1,69 +1,54 @@
 {
   "kind": "build_request",
-  "title": "Set uploaded image as landing page hero image",
+  "title": "Remove landing page hero image",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Ensure the landing-page hero image referenced by `frontend/src/components/AuthGate.tsx` at `/assets/generated/home-hero.dim_1600x600.jpg` exists as a static asset in the frontend build output and loads successfully in the deployed app.",
+      "text": "Remove the hero image block from the landing page AuthGate component so the page no longer renders any hero image or hero-image fallback placeholder above the main headline.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages"
+          "msg-user-1"
         ],
         "quotes": [
-          "Make this the Image on the Landing page"
+          "remove the hero Image"
         ]
       },
       "acceptanceCriteria": [
-        "Requesting `/assets/generated/home-hero.dim_1600x600.jpg` in the deployed app returns HTTP 200 and renders an image (not a 404).",
-        "The landing page hero image displays without triggering the error fallback in normal conditions."
+        "On the AuthGate (landing) page, no image is displayed above the main headline.",
+        "The previous fallback 'Hero image' placeholder UI is not rendered anywhere on the landing page.",
+        "The page layout remains visually balanced (no large empty container where the image used to be)."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Update the hero image file content to use the newly uploaded image (`image-8.png`) while keeping the public URL path unchanged (`/assets/generated/home-hero.dim_1600x600.jpg`).",
+      "text": "Clean up AuthGate component code after removing the hero image by deleting unused state and imports related to hero-image error handling.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages"
+          "msg-user-1"
         ],
         "quotes": [
-          "Make this the Image on the Landing page"
+          "remove the hero Image"
         ]
       },
       "acceptanceCriteria": [
-        "The file `frontend/public/assets/generated/home-hero.dim_1600x600.jpg` is produced from `image-8.png` and is a 1600×600 JPG.",
-        "No code changes are required to the `src` URL in `AuthGate.tsx` (it remains `/assets/generated/home-hero.dim_1600x600.jpg`)."
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Keep the existing landing-page hero image load-error fallback behavior in `frontend/src/components/AuthGate.tsx` so the page layout remains stable if the hero image fails to load.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "recent-messages"
-        ]
-      },
-      "acceptanceCriteria": [
-        "If the hero image fails to load (e.g., missing asset), the placeholder block renders and maintains the same aspect ratio as the image container."
+        "`useState` and the `imageError/setImageError` logic are removed from `frontend/src/components/AuthGate.tsx` if no longer needed.",
+        "The landing page builds without TypeScript/ESLint unused import warnings caused by the removal."
       ]
     }
   ],
   "constraints": [
-    "Do not change the hero image public URL path; it must remain `/assets/generated/home-hero.dim_1600x600.jpg` as referenced in `frontend/src/components/AuthGate.tsx`.",
-    "Do not modify files under `frontend/src/components/ui` or other frontend immutable paths listed in SYSTEM_CONTEXT."
+    "Do not edit any files under frontend/src/components/ui or any other paths listed as immutable in SYSTEM_CONTEXT."
   ],
   "nonGoals": [
-    "Changing landing page layout, copy, or CTA behavior beyond ensuring the hero image displays.",
-    "Backend changes or data migrations."
+    "Do not remove hero images used on other pages (e.g., evangelism pages) unless they are part of AuthGate.",
+    "Do not change landing page headline, subheadline, CTA button copy, or navigation behavior beyond what is necessary to remove the hero image."
   ],
   "imageRequirements": {
     "required": [],
-    "edits": [
-      "Crop/resize to a wide hero and export as JPG (image-8.png > home-hero.dim_1600x600.jpg)"
-    ]
+    "edits": []
   },
   "userProfileUpdate": {
     "goalsToAdd": [],

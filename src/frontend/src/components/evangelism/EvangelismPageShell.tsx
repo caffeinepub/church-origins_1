@@ -10,6 +10,7 @@ interface EvangelismPageShellProps {
   subtitle?: string;
   showHero?: boolean;
   heroOverride?: HeroOverride;
+  titleAdornment?: ReactNode;
   children: ReactNode;
 }
 
@@ -18,6 +19,7 @@ export default function EvangelismPageShell({
   subtitle,
   showHero = false,
   heroOverride,
+  titleAdornment,
   children,
 }: EvangelismPageShellProps) {
   const heroSrc = heroOverride?.src || '/assets/generated/evangelism-hero.dim_1600x600.png';
@@ -43,10 +45,17 @@ export default function EvangelismPageShell({
             alt=""
             className="w-12 h-12 flex-shrink-0"
           />
-          <div>
-            <h1 className="text-4xl font-serif font-semibold text-foreground mb-2">
-              {title}
-            </h1>
+          <div className="flex-1">
+            <div className="flex flex-wrap items-baseline gap-3 mb-2">
+              <h1 className="text-4xl font-serif font-semibold text-foreground">
+                {title}
+              </h1>
+              {titleAdornment && (
+                <div className="text-sm text-muted-foreground">
+                  {titleAdornment}
+                </div>
+              )}
+            </div>
             {subtitle && (
               <p className="text-lg text-muted-foreground">
                 {subtitle}

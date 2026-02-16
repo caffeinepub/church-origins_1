@@ -111,4 +111,27 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
+    
+    /* DFINITY ICP gradient button */
+    .icp-gradient-button {
+        background: linear-gradient(135deg, 
+            oklch(0.45 0.15 300) 0%, 
+            oklch(0.55 0.18 280) 25%, 
+            oklch(0.65 0.20 260) 50%, 
+            oklch(0.55 0.18 280) 75%, 
+            oklch(0.45 0.15 300) 100%);
+        color: oklch(0.98 0.005 60);
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .icp-gradient-button:hover {
+        background: linear-gradient(135deg, 
+            oklch(0.50 0.18 300) 0%, 
+            oklch(0.60 0.21 280) 25%, 
+            oklch(0.70 0.23 260) 50%, 
+            oklch(0.60 0.21 280) 75%, 
+            oklch(0.50 0.18 300) 100%);
+        box-shadow: 0 4px 12px oklch(0.45 0.15 280 / 0.4);
+    }
 }

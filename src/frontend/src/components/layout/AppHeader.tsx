@@ -3,6 +3,7 @@ import { useInternetIdentity } from '../../hooks/useInternetIdentity';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '../ui/button';
 import { LogOut, Plus, BookOpen, Heart, Library, HelpCircle } from 'lucide-react';
+import SupportWithIcpButton from './SupportWithIcpButton';
 
 export default function AppHeader() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function AppHeader() {
     <header className="border-b border-border/40 bg-background sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 max-w-6xl">
         <div className="flex items-center justify-between gap-4">
-          {/* Left: Main CTA Button */}
+          {/* Left: Main CTA Buttons */}
           <div className="flex items-center gap-2">
             <Button
               variant="default"
@@ -33,6 +34,7 @@ export default function AppHeader() {
               <span className="hidden sm:inline">Ready For The Peace with Jesus?</span>
               <span className="sm:hidden">Peace with Jesus?</span>
             </Button>
+            <SupportWithIcpButton />
           </div>
 
           {/* Right: Navigation Actions */}

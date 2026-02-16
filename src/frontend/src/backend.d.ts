@@ -7,6 +7,17 @@ export interface None {
     __kind__: "None";
 }
 export type Option<T> = Some<T> | None;
+export interface BibleVerse {
+    id: bigint;
+    translationId: bigint;
+    bookName: string;
+    verseNumber: string;
+    chapterNumber: string;
+    text: string;
+    bookId: bigint;
+    chapterId: bigint;
+    translationName: string;
+}
 export interface AgentResponse {
     agentReply: string;
     references: Array<string>;
@@ -20,6 +31,22 @@ export interface ScriptureEntry {
     text: string;
     motivation: string;
 }
+export interface BibleBook {
+    id: bigint;
+    translationId: bigint;
+    name: string;
+    abbreviation: string;
+}
+export interface BibleChapter {
+    id: bigint;
+    bookId: bigint;
+    number: string;
+}
+export interface BibleTranslation {
+    id: bigint;
+    name: string;
+    abbreviation: string;
+}
 export interface FeedItem {
     id: bigint;
     references: Array<string>;
@@ -29,6 +56,13 @@ export interface FeedItem {
     repostCount: bigint;
     timestamp: bigint;
     itemType: Variant_userPost_scriptureEntry_aiAgentPost_reflection_testimony;
+}
+export interface LastBibleLocation {
+    translationId: bigint;
+    bookId: bigint;
+    chapterId: bigint;
+    verseId?: bigint;
+    scrollAnchor?: bigint;
 }
 export interface DiscernmentReflection {
     references: Array<string>;
@@ -85,24 +119,31 @@ export interface backendInterface {
     createScriptureEntry(text: string, motivation: string, labels: Array<string>, references: Array<string>, contentKind: string): Promise<void>;
     followUser(userToFollow: Principal): Promise<void>;
     getApprovedTestimonies(): Promise<Array<Testimony>>;
-    getAvailableTranslations(): Promise<Array<string>>;
+    getAvailableBibleTranslations(): Promise<Array<BibleTranslation>>;
+    getBooksForTranslation(translationId: bigint): Promise<Array<BibleBook>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
+    getChaptersForBook(bookId: bigint): Promise<Array<BibleChapter>>;
     getDailyFeed(): Promise<[Array<ScriptureEntry>, Array<DiscernmentReflection>, Array<Testimony>]>;
     getDiscernmentReflections(): Promise<Array<DiscernmentReflection>>;
     getFeed(limit: bigint, offset: bigint): Promise<Array<FeedItem>>;
     getFollowersCount(user: Principal): Promise<bigint>;
     getFollowingCount(user: Principal): Promise<bigint>;
+    getLastBibleLocation(): Promise<LastBibleLocation | null>;
     getLatestAgentPost(): Promise<FeedItem | null>;
     getResponsesToUser(user: Principal): Promise<Array<AgentResponse>>;
     getScriptureByTranslation(translation: string): Promise<Array<ScriptureEntry> | null>;
     getScriptureEntries(): Promise<Array<ScriptureEntry>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
+    getVersesForChapter(translationId: bigint, bookId: bigint, chapterId: bigint): Promise<Array<BibleVerse>>;
     isCallerAdmin(): Promise<boolean>;
     rejectTestimony(testimonyId: Principal, moderatorNote: string): Promise<void>;
     removeReaction(itemId: bigint): Promise<void>;
     repostItem(itemId: bigint): Promise<bigint>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
+    searchVerse(translationId: bigint, bookId: bigint, chapterId: bigint, verseNumber: string): Promise<BibleVerse | null>;
+    setLastBibleLocation(translationId: bigint, bookId: bigint, chapterId: bigint, verseId: bigint | null): Promise<void>;
+    setLastBibleLocationWithScroll(translationId: bigint, bookId: bigint, chapterId: bigint, verseId: bigint | null, scrollAnchor: bigint | null): Promise<void>;
     submitTestimony(content: string, labels: Array<string>, disclaimers: Array<string>, scriptureReferences: Array<string>): Promise<void>;
     unfollowUser(userToUnfollow: Principal): Promise<void>;
 }

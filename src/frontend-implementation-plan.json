@@ -1,49 +1,36 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Set uploaded image as landing page hero image (static asset)",
+  "title": "Remove AuthGate landing hero image",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Ensure the landing-page hero image file exists in public static assets so AuthGate can load it at the existing URL.",
+      "summary": "Remove the hero image and any hero-image fallback UI from the AuthGate (landing) page while keeping the layout balanced.",
       "acceptanceCriteria": [
-        "Requesting `/assets/generated/home-hero.dim_1600x600.jpg` in the deployed app returns HTTP 200 and renders an image (not a 404).",
-        "The landing page hero image displays without triggering the error fallback in normal conditions."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/public/assets/generated/home-hero.dim_1600x600.jpg",
-          "operation": "create",
-          "description": "Add the hero image as a public static asset so it is included in the frontend build output at the exact path used by AuthGate (`/assets/generated/home-hero.dim_1600x600.jpg`)."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Replace the hero image content with the newly uploaded image while keeping the hero image URL unchanged.",
-      "acceptanceCriteria": [
-        "The file `frontend/public/assets/generated/home-hero.dim_1600x600.jpg` is produced from `image-8.png` and is a 1600×600 JPG.",
-        "No code changes are required to the `src` URL in `AuthGate.tsx` (it remains `/assets/generated/home-hero.dim_1600x600.jpg`)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/public/assets/generated/home-hero.dim_1600x600.jpg",
-          "operation": "modify",
-          "description": "Regenerate/replace the file contents using the uploaded `image-8.png` as the source: crop/resize to a wide hero and export as a 1600×600 JPG, keeping the filename exactly `frontend/public/assets/generated/home-hero.dim_1600x600.jpg` so the public URL path remains unchanged."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Preserve the existing hero image load-error fallback behavior and stable layout in AuthGate.",
-      "acceptanceCriteria": [
-        "If the hero image fails to load (e.g., missing asset), the placeholder block renders and maintains the same aspect ratio as the image container."
+        "On the AuthGate (landing) page, no image is displayed above the main headline.",
+        "The previous fallback 'Hero image' placeholder UI is not rendered anywhere on the landing page.",
+        "The page layout remains visually balanced (no large empty container where the image used to be)."
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/AuthGate.tsx",
           "operation": "modify",
-          "description": "Confirm the hero image error handler and placeholder rendering remain intact; ensure the placeholder and image container continue to enforce the same aspect ratio so the layout stays stable when the image fails to load, without changing the hero image `src` path."
+          "description": "Remove the entire hero-image block (including the <img> and its fallback placeholder UI) from the top of the landing page so nothing renders above the main headline; adjust surrounding spacing/classes as needed to avoid leaving an empty container. (No selected component required.)"
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Delete unused AuthGate state and imports that were only used for hero-image error handling to keep the build clean.",
+      "acceptanceCriteria": [
+        "`useState` and the `imageError/setImageError` logic are removed from `frontend/src/components/AuthGate.tsx` if no longer needed.",
+        "The landing page builds without TypeScript/ESLint unused import warnings caused by the removal."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/AuthGate.tsx",
+          "operation": "modify",
+          "description": "Remove `useState` import and delete `imageError/setImageError` state plus any onError/fallback-related logic that becomes unused after the hero image removal; ensure imports from `lucide-react` and other modules remain minimal and used."
         }
       ]
     }

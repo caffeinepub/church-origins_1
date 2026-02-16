@@ -32,6 +32,7 @@ import HowToShareYourFaithPage from './pages/evangelism/topics-questions/topics/
 import PeaceWithGodStepsIntroPage from './pages/PeaceWithGodStepsIntroPage';
 import PeaceWithGodStepsLongPage from './pages/PeaceWithGodStepsLongPage';
 import FaithResourcesPage from './pages/FaithResourcesPage';
+import NotFoundPage from './pages/NotFoundPage';
 import AuthGate from './components/AuthGate';
 import AppLayout from './components/layout/AppLayout';
 import { Loader2 } from 'lucide-react';
@@ -220,6 +221,12 @@ const peaceWithGodStepsLongRoute = createRoute({
   component: PeaceWithGodStepsLongPage,
 });
 
+const notFoundRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '*',
+  component: NotFoundPage,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   onboardingRoute,
@@ -249,6 +256,7 @@ const routeTree = rootRoute.addChildren([
   howToShareYourFaithRoute,
   peaceWithGodStepsIntroRoute,
   peaceWithGodStepsLongRoute,
+  notFoundRoute,
 ]);
 
 const router = createRouter({ routeTree });

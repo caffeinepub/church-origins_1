@@ -1,23 +1,22 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Project includes a landing page; user wants a specific image set as the landing page image.",
+  "summary": "New project",
   "architectural_notes": [],
   "known_issues": [],
   "isFixRequest": false,
-  "imageRequirements": "## Edit Images\n- Crop/resize to a wide hero and export as JPG (image-8.png > home-hero.dim_1600x600.jpg)",
   "existing_features": [
     {
-      "id": "feature-ensure-the-landing-page-hero-image-referenced-by-frontend-src-components-authgate-tsx-at-assets-generated-home-hero-dim-1600x600-jpg-exists-as-a-static-asset-in-the-frontend-build-output-and-loads-successfully-in-the-deployed-app",
-      "title": "Ensure the landing-page hero image referenced by `frontend/src/components/AuthGate.tsx` at `/assets/generated/home-hero.dim_1600x600.jpg` exists as a static asset in the frontend build output and loads successfully in the deployed app.",
+      "id": "feature-remove-the-hero-image-block-from-the-landing-page-authgate-component-so-the-page-no-longer-renders-any-hero-image-or-hero-image-fallback-placeholder-above-the-main-headline",
+      "title": "Remove the hero image block from the landing page AuthGate component so the page no longer renders any hero image or hero-image fallback placeholder above the main headline.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-update-the-hero-image-file-content-to-use-the-newly-uploaded-image-image-8-png-while-keeping-the-public-url-path-unchanged-assets-generated-home-hero-dim-1600x600-jpg",
-      "title": "Update the hero image file content to use the newly uploaded image (`image-8.png`) while keeping the public URL path unchanged (`/assets/generated/home-hero.dim_1600x600.jpg`).",
+      "id": "feature-clean-up-authgate-component-code-after-removing-the-hero-image-by-deleting-unused-state-and-imports-related-to-hero-image-error-handling",
+      "title": "Clean up AuthGate component code after removing the hero image by deleting unused state and imports related to hero-image error handling.",
       "reqIds": [
         "REQ-2"
       ],
@@ -27,20 +26,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Set the provided image as the landing page image",
+      "summary": "Remove the hero image from the landing page",
       "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-4",
-      "summary": "Keep the existing landing-page hero image load-error fallback behavior in `frontend/src/components/AuthGate.tsx` so the page layout remains stable if the hero image fails to load.",
-      "reqIds": [
-        "REQ-3"
-      ],
       "status": "pending"
     }
   ],
-  "projectName": "Set uploaded image as landing page hero image",
+  "projectName": "Remove landing page hero image",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

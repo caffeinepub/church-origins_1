@@ -12,7 +12,8 @@ import Array "mo:core/Array";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 
-// (with { migration = Migration.run})
+
+// Apply migration during upgrade/downgrade.
 
 actor {
   module Testimony {
@@ -80,6 +81,45 @@ actor {
     references : [Text];
   };
 
+  public type BibleTranslation = {
+    id : Nat;
+    name : Text;
+    abbreviation : Text;
+  };
+
+  public type BibleBook = {
+    id : Nat;
+    translationId : Nat;
+    name : Text;
+    abbreviation : Text;
+  };
+
+  public type BibleChapter = {
+    id : Nat;
+    bookId : Nat;
+    number : Text;
+  };
+
+  public type BibleVerse = {
+    id : Nat;
+    translationId : Nat;
+    bookId : Nat;
+    chapterId : Nat;
+    verseNumber : Text;
+    translationName : Text;
+    bookName : Text;
+    chapterNumber : Text;
+    text : Text;
+  };
+
+  public type LastBibleLocation = {
+    translationId : Nat;
+    bookId : Nat;
+    chapterId : Nat;
+    verseId : ?Nat;
+    scrollAnchor : ?Nat;
+  };
+
   let userProfiles = Map.empty<Principal, UserProfile>();
   let testimonies = Map.empty<Principal, Testimony>();
   let scriptureEntries = Map.empty<Text, ScriptureEntry>();
@@ -90,8 +130,179 @@ actor {
   var feedItemComments = Map.empty<Nat, List.List<Comment>>();
   var followerRelationships = Map.empty<Principal, Set.Set<Principal>>();
   var agentResponses = Map.empty<Principal, List.List<AgentResponse>>();
+  var lastBibleLocations = Map.empty<Principal, LastBibleLocation>();
   var nextFeedItemId : Nat = 0;
   let agentPrincipal = Principal.anonymous();
+
+  let bibleTranslations : [BibleTranslation] = [
+    {
+      id = 2001;
+      name = "NJSV - New King James Version";
+      abbreviation = "NJKV";
+    },
+    {
+      id = 2002;
+      name = "NLT - New Living Translation";
+      abbreviation = "NLT";
+    },
+  ];
+
+  let bibleBooks : [BibleBook] = [
+    {
+      id = 21001;
+      translationId = 2001;
+      name = "Matthew";
+      abbreviation = "Mt";
+    },
+    {
+      id = 21002;
+      translationId = 2001;
+      name = "Mark";
+      abbreviation = "Mk";
+    },
+    {
+      id = 22001;
+      translationId = 2002;
+      name = "Matthew";
+      abbreviation = "Mt";
+    },
+    {
+      id = 22002;
+      translationId = 2002;
+      name = "Mark";
+      abbreviation = "Mk";
+    },
+  ];
+
+  let matthewChapters : [BibleChapter] = [
+    {
+      id = 1;
+      bookId = 21001;
+      number = "1";
+    },
+    {
+      id = 2;
+      bookId = 21001;
+      number = "2";
+    },
+    {
+      id = 3;
+      bookId = 22001;
+      number = "1";
+    },
+    {
+      id = 4;
+      bookId = 22001;
+      number = "2";
+    },
+  ];
+
+  let markChapters : [BibleChapter] = [
+    {
+      id = 5;
+      bookId = 21002;
+      number = "1";
+    },
+    {
+      id = 6;
+      bookId = 22002;
+      number = "1";
+    },
+  ];
+
+  let matthewVerses : [BibleVerse] = [
+    {
+      id = 1;
+      translationId = 2001;
+      bookId = 21001;
+      chapterId = 1;
+      verseNumber = "1";
+      translationName = "NKJV";
+      bookName = "Matthew";
+      chapterNumber = "1";
+      text = "The book of the genealogy of Jesus Christ, the Son of David, the Son of Abraham.";
+    },
+    {
+      id = 2;
+      translationId = 2001;
+      bookId = 21001;
+      chapterId = 1;
+      verseNumber = "2";
+      translationName = "NKJV";
+      bookName = "Matthew";
+      chapterNumber = "1";
+      text = "Abraham begot Isaac, Isaac begot Jacob, and Jacob begot Judah and his brothers.";
+    },
+    {
+      id = 3;
+      translationId = 2001;
+      bookId = 21001;
+      chapterId = 2;
+      verseNumber = "1";
+      translationName = "NKJV";
+      bookName = "Matthew";
+      chapterNumber = "2";
+      text = "Now after Jesus was born in Bethlehem of Judea in the days of Herod the king, behold, wise men from the East came to Jerusalem.";
+    },
+    {
+      id = 4;
+      translationId = 2002;
+      bookId = 22001;
+      chapterId = 3;
+      verseNumber = "1";
+      translationName = "NLT";
+      bookName = "Matthew";
+      chapterNumber = "1";
+      text = "This is a record of the ancestors of Jesus the Messiah, a descendant of David and of Abraham (NLT).";
+    },
+    {
+      id = 5;
+      translationId = 2002;
+      bookId = 22001;
+      chapterId = 3;
+      verseNumber = "2";
+      translationName = "NLT";
+      bookName = "Matthew";
+      chapterNumber = "1";
+      text = "Abraham was the father of Isaac. Isaac was the father of Jacob. Jacob was the father of Judah and his brothers (NLT).";
+    },
+    {
+      id = 6;
+      translationId = 2002;
+      bookId = 22001;
+      chapterId = 4;
+      verseNumber = "1";
+      translationName = "NLT";
+      bookName = "Matthew";
+      chapterNumber = "2";
+      text = "Jesus was born in Bethlehem in Judea, during the reign of King Herod. About that time, some wise men from eastern lands arrived in Jerusalem (NLT).";
+    },
+  ];
+
+  let markVerses : [BibleVerse] = [
+    {
+      id = 7;
+      translationId = 2001;
+      bookId = 21002;
+      chapterId = 5;
+      verseNumber = "1";
+      translationName = "NKJV";
+      bookName = "Mark";
+      chapterNumber = "1";
+      text = "The beginning of the gospel of Jesus Christ, the Son of God.";
+    },
+    {
+      id = 8;
+      translationId = 2002;
+      bookId = 22002;
+      chapterId = 6;
+      verseNumber = "1";
+      translationName = "NLT";
+      bookName = "Mark";
+      chapterNumber = "1";
+      text = "This is the Good News about Jesus the Messiah, the Son of God. It began (NLT).";
+    },
+  ];
 
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
@@ -527,10 +738,148 @@ actor {
     };
   };
 
-  public query ({ caller }) func getAvailableTranslations() : async [Text] {
+  public query ({ caller }) func getAvailableBibleTranslations() : async [BibleTranslation] {
     if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
       Runtime.trap("Unauthorized: Only users can view available translations");
     };
-    ["NIV", "NKJV", "ESV"];
+    bibleTranslations;
+  };
+
+  public query ({ caller }) func getBooksForTranslation(translationId : Nat) : async [BibleBook] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view available books");
+    };
+    bibleBooks.filter(func(book) { book.translationId == translationId });
+  };
+
+  public query ({ caller }) func getChaptersForBook(bookId : Nat) : async [BibleChapter] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view chapters");
+    };
+    switch (bookId) {
+      case (21001) { matthewChapters.filter(func(chapter) { chapter.bookId == 21001 }) };
+      case (22001) { matthewChapters.filter(func(chapter) { chapter.bookId == 22001 }) };
+      case (21002) { markChapters.filter(func(chapter) { chapter.bookId == 21002 }) };
+      case (22002) { markChapters.filter(func(chapter) { chapter.bookId == 22002 }) };
+      case (_) { [] };
+    };
+  };
+
+  public query ({ caller }) func getVersesForChapter(
+    translationId : Nat,
+    bookId : Nat,
+    chapterId : Nat
+  ) : async [BibleVerse] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view verses");
+    };
+
+    switch (bookId) {
+      case (21001) {
+        matthewVerses.filter(
+          func(verse) {
+            verse.translationId == translationId and verse.bookId == bookId and verse.chapterId == chapterId
+          }
+        );
+      };
+      case (22001) {
+        matthewVerses.filter(
+          func(verse) {
+            verse.translationId == translationId and verse.bookId == bookId and verse.chapterId == chapterId
+          }
+        );
+      };
+      case (21002) {
+        markVerses.filter(
+          func(verse) {
+            verse.translationId == translationId and verse.bookId == bookId and verse.chapterId == chapterId
+          }
+        );
+      };
+      case (22002) {
+        markVerses.filter(
+          func(verse) {
+            verse.translationId == translationId and verse.bookId == bookId and verse.chapterId == chapterId
+          }
+        );
+      };
+      case (_) { [] };
+    };
+  };
+
+  public shared ({ caller }) func setLastBibleLocation(
+    translationId : Nat,
+    bookId : Nat,
+    chapterId : Nat,
+    verseId : ?Nat
+  ) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can set last Bible location");
+    };
+    let location : LastBibleLocation = {
+      translationId;
+      bookId;
+      chapterId;
+      verseId;
+      scrollAnchor = null;
+    };
+    lastBibleLocations.add(caller, location);
+  };
+
+  public shared ({ caller }) func setLastBibleLocationWithScroll(
+    translationId : Nat,
+    bookId : Nat,
+    chapterId : Nat,
+    verseId : ?Nat,
+    scrollAnchor : ?Nat,
+  ) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can set last Bible location");
+    };
+    let location : LastBibleLocation = {
+      translationId;
+      bookId;
+      chapterId;
+      verseId;
+      scrollAnchor;
+    };
+    lastBibleLocations.add(caller, location);
+  };
+
+  public query ({ caller }) func getLastBibleLocation() : async ?LastBibleLocation {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can get last Bible location");
+    };
+    lastBibleLocations.get(caller);
+  };
+
+  public query ({ caller }) func searchVerse(
+    translationId : Nat,
+    bookId : Nat,
+    chapterId : Nat,
+    verseNumber : Text,
+  ) : async ?BibleVerse {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can search verses");
+    };
+
+    let matchingVerses = switch (bookId) {
+      case (21001) { matthewVerses };
+      case (22001) { matthewVerses };
+      case (21002) { markVerses };
+      case (22002) { markVerses };
+      case (_) { [] };
+    };
+
+    let filtered = matchingVerses.filter(
+      func(verse) {
+        verse.translationId == translationId and verse.bookId == bookId and verse.chapterId == chapterId and verse.verseNumber == verseNumber
+      }
+    );
+
+    switch (filtered.size()) {
+      case (0) { null };
+      case (_) { ?filtered[0] };
+    };
   };
 };

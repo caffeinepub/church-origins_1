@@ -32,6 +32,22 @@ export const Testimony = IDL.Record({
   'state' : State,
   'scriptureReferences' : IDL.Vec(IDL.Text),
 });
+export const BibleTranslation = IDL.Record({
+  'id' : IDL.Nat,
+  'name' : IDL.Text,
+  'abbreviation' : IDL.Text,
+});
+export const BibleBook = IDL.Record({
+  'id' : IDL.Nat,
+  'translationId' : IDL.Nat,
+  'name' : IDL.Text,
+  'abbreviation' : IDL.Text,
+});
+export const BibleChapter = IDL.Record({
+  'id' : IDL.Nat,
+  'bookId' : IDL.Nat,
+  'number' : IDL.Text,
+});
 export const ScriptureEntry = IDL.Record({
   'references' : IDL.Vec(IDL.Text),
   'contentKind' : IDL.Text,
@@ -61,11 +77,29 @@ export const FeedItem = IDL.Record({
     'testimony' : IDL.Null,
   }),
 });
+export const LastBibleLocation = IDL.Record({
+  'translationId' : IDL.Nat,
+  'bookId' : IDL.Nat,
+  'chapterId' : IDL.Nat,
+  'verseId' : IDL.Opt(IDL.Nat),
+  'scrollAnchor' : IDL.Opt(IDL.Nat),
+});
 export const AgentResponse = IDL.Record({
   'agentReply' : IDL.Text,
   'references' : IDL.Vec(IDL.Text),
   'originalMessage' : IDL.Text,
   'timestamp' : IDL.Int,
+});
+export const BibleVerse = IDL.Record({
+  'id' : IDL.Nat,
+  'translationId' : IDL.Nat,
+  'bookName' : IDL.Text,
+  'verseNumber' : IDL.Text,
+  'chapterNumber' : IDL.Text,
+  'text' : IDL.Text,
+  'bookId' : IDL.Nat,
+  'chapterId' : IDL.Nat,
+  'translationName' : IDL.Text,
 });
 
 export const idlService = IDL.Service({
@@ -98,9 +132,23 @@ export const idlService = IDL.Service({
     ),
   'followUser' : IDL.Func([IDL.Principal], [], []),
   'getApprovedTestimonies' : IDL.Func([], [IDL.Vec(Testimony)], ['query']),
-  'getAvailableTranslations' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
+  'getAvailableBibleTranslations' : IDL.Func(
+      [],
+      [IDL.Vec(BibleTranslation)],
+      ['query'],
+    ),
+  'getBooksForTranslation' : IDL.Func(
+      [IDL.Nat],
+      [IDL.Vec(BibleBook)],
+      ['query'],
+    ),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getChaptersForBook' : IDL.Func(
+      [IDL.Nat],
+      [IDL.Vec(BibleChapter)],
+      ['query'],
+    ),
   'getDailyFeed' : IDL.Func(
       [],
       [
@@ -118,6 +166,11 @@ export const idlService = IDL.Service({
   'getFeed' : IDL.Func([IDL.Nat, IDL.Nat], [IDL.Vec(FeedItem)], ['query']),
   'getFollowersCount' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
   'getFollowingCount' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
+  'getLastBibleLocation' : IDL.Func(
+      [],
+      [IDL.Opt(LastBibleLocation)],
+      ['query'],
+    ),
   'getLatestAgentPost' : IDL.Func([], [IDL.Opt(FeedItem)], ['query']),
   'getResponsesToUser' : IDL.Func(
       [IDL.Principal],
@@ -135,11 +188,31 @@ export const idlService = IDL.Service({
       [IDL.Opt(UserProfile)],
       ['query'],
     ),
+  'getVersesForChapter' : IDL.Func(
+      [IDL.Nat, IDL.Nat, IDL.Nat],
+      [IDL.Vec(BibleVerse)],
+      ['query'],
+    ),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'rejectTestimony' : IDL.Func([IDL.Principal, IDL.Text], [], []),
   'removeReaction' : IDL.Func([IDL.Nat], [], []),
   'repostItem' : IDL.Func([IDL.Nat], [IDL.Nat], []),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'searchVerse' : IDL.Func(
+      [IDL.Nat, IDL.Nat, IDL.Nat, IDL.Text],
+      [IDL.Opt(BibleVerse)],
+      ['query'],
+    ),
+  'setLastBibleLocation' : IDL.Func(
+      [IDL.Nat, IDL.Nat, IDL.Nat, IDL.Opt(IDL.Nat)],
+      [],
+      [],
+    ),
+  'setLastBibleLocationWithScroll' : IDL.Func(
+      [IDL.Nat, IDL.Nat, IDL.Nat, IDL.Opt(IDL.Nat), IDL.Opt(IDL.Nat)],
+      [],
+      [],
+    ),
   'submitTestimony' : IDL.Func(
       [IDL.Text, IDL.Vec(IDL.Text), IDL.Vec(IDL.Text), IDL.Vec(IDL.Text)],
       [],
@@ -175,6 +248,22 @@ export const idlFactory = ({ IDL }) => {
     'state' : State,
     'scriptureReferences' : IDL.Vec(IDL.Text),
   });
+  const BibleTranslation = IDL.Record({
+    'id' : IDL.Nat,
+    'name' : IDL.Text,
+    'abbreviation' : IDL.Text,
+  });
+  const BibleBook = IDL.Record({
+    'id' : IDL.Nat,
+    'translationId' : IDL.Nat,
+    'name' : IDL.Text,
+    'abbreviation' : IDL.Text,
+  });
+  const BibleChapter = IDL.Record({
+    'id' : IDL.Nat,
+    'bookId' : IDL.Nat,
+    'number' : IDL.Text,
+  });
   const ScriptureEntry = IDL.Record({
     'references' : IDL.Vec(IDL.Text),
     'contentKind' : IDL.Text,
@@ -204,11 +293,29 @@ export const idlFactory = ({ IDL }) => {
       'testimony' : IDL.Null,
     }),
   });
+  const LastBibleLocation = IDL.Record({
+    'translationId' : IDL.Nat,
+    'bookId' : IDL.Nat,
+    'chapterId' : IDL.Nat,
+    'verseId' : IDL.Opt(IDL.Nat),
+    'scrollAnchor' : IDL.Opt(IDL.Nat),
+  });
   const AgentResponse = IDL.Record({
     'agentReply' : IDL.Text,
     'references' : IDL.Vec(IDL.Text),
     'originalMessage' : IDL.Text,
     'timestamp' : IDL.Int,
+  });
+  const BibleVerse = IDL.Record({
+    'id' : IDL.Nat,
+    'translationId' : IDL.Nat,
+    'bookName' : IDL.Text,
+    'verseNumber' : IDL.Text,
+    'chapterNumber' : IDL.Text,
+    'text' : IDL.Text,
+    'bookId' : IDL.Nat,
+    'chapterId' : IDL.Nat,
+    'translationName' : IDL.Text,
   });
   
   return IDL.Service({
@@ -241,9 +348,23 @@ export const idlFactory = ({ IDL }) => {
       ),
     'followUser' : IDL.Func([IDL.Principal], [], []),
     'getApprovedTestimonies' : IDL.Func([], [IDL.Vec(Testimony)], ['query']),
-    'getAvailableTranslations' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
+    'getAvailableBibleTranslations' : IDL.Func(
+        [],
+        [IDL.Vec(BibleTranslation)],
+        ['query'],
+      ),
+    'getBooksForTranslation' : IDL.Func(
+        [IDL.Nat],
+        [IDL.Vec(BibleBook)],
+        ['query'],
+      ),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getChaptersForBook' : IDL.Func(
+        [IDL.Nat],
+        [IDL.Vec(BibleChapter)],
+        ['query'],
+      ),
     'getDailyFeed' : IDL.Func(
         [],
         [
@@ -261,6 +382,11 @@ export const idlFactory = ({ IDL }) => {
     'getFeed' : IDL.Func([IDL.Nat, IDL.Nat], [IDL.Vec(FeedItem)], ['query']),
     'getFollowersCount' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
     'getFollowingCount' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
+    'getLastBibleLocation' : IDL.Func(
+        [],
+        [IDL.Opt(LastBibleLocation)],
+        ['query'],
+      ),
     'getLatestAgentPost' : IDL.Func([], [IDL.Opt(FeedItem)], ['query']),
     'getResponsesToUser' : IDL.Func(
         [IDL.Principal],
@@ -278,11 +404,31 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Opt(UserProfile)],
         ['query'],
       ),
+    'getVersesForChapter' : IDL.Func(
+        [IDL.Nat, IDL.Nat, IDL.Nat],
+        [IDL.Vec(BibleVerse)],
+        ['query'],
+      ),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'rejectTestimony' : IDL.Func([IDL.Principal, IDL.Text], [], []),
     'removeReaction' : IDL.Func([IDL.Nat], [], []),
     'repostItem' : IDL.Func([IDL.Nat], [IDL.Nat], []),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'searchVerse' : IDL.Func(
+        [IDL.Nat, IDL.Nat, IDL.Nat, IDL.Text],
+        [IDL.Opt(BibleVerse)],
+        ['query'],
+      ),
+    'setLastBibleLocation' : IDL.Func(
+        [IDL.Nat, IDL.Nat, IDL.Nat, IDL.Opt(IDL.Nat)],
+        [],
+        [],
+      ),
+    'setLastBibleLocationWithScroll' : IDL.Func(
+        [IDL.Nat, IDL.Nat, IDL.Nat, IDL.Opt(IDL.Nat), IDL.Opt(IDL.Nat)],
+        [],
+        [],
+      ),
     'submitTestimony' : IDL.Func(
         [IDL.Text, IDL.Vec(IDL.Text), IDL.Vec(IDL.Text), IDL.Vec(IDL.Text)],
         [],
