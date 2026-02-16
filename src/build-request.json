@@ -1,63 +1,38 @@
 {
   "kind": "build_request",
-  "title": "Remove landing page hero image",
+  "title": "Remove extra space between AuthGate hero image and headline",
+  "projectName": "Church Origins",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Remove the hero image block from the landing page AuthGate component so the page no longer renders any hero image or hero-image fallback placeholder above the main headline.",
+      "text": "On the AuthGate landing page hero section, minimize/remove the vertical gap between the selected hero image element (XPath: /html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/section[1]/div[1]/div[1]/div[1]/img[1]) and the selected main headline element (XPath: /html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/section[1]/div[1]/div[1]/h1[1]) by adjusting spacing styles ONLY on these two selected elements, without changing spacing for any other elements in the hero section (e.g., subheadline, CTA buttons).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-1"
+          "msg-1"
         ],
         "quotes": [
-          "remove the hero Image"
+          "Remove the Space between"
         ]
       },
       "acceptanceCriteria": [
-        "On the AuthGate (landing) page, no image is displayed above the main headline.",
-        "The previous fallback 'Hero image' placeholder UI is not rendered anywhere on the landing page.",
-        "The page layout remains visually balanced (no large empty container where the image used to be)."
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "text": "Clean up AuthGate component code after removing the hero image by deleting unused state and imports related to hero-image error handling.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-user-1"
-        ],
-        "quotes": [
-          "remove the hero Image"
-        ]
-      },
-      "acceptanceCriteria": [
-        "`useState` and the `imageError/setImageError` logic are removed from `frontend/src/components/AuthGate.tsx` if no longer needed.",
-        "The landing page builds without TypeScript/ESLint unused import warnings caused by the removal."
+        "The vertical whitespace between the hero image and the main headline is visibly reduced compared to the current layout.",
+        "Only the selected elements’ spacing-related styles are changed; spacing for the subheadline and CTA button group remains unchanged.",
+        "No layout overlap/cropping occurs at common responsive breakpoints (mobile and desktop)."
       ]
     }
   ],
   "constraints": [
-    "Do not edit any files under frontend/src/components/ui or any other paths listed as immutable in SYSTEM_CONTEXT."
+    "Apply spacing changes ONLY to the two selected elements identified by the provided XPaths (the hero <img> and the main <h1>).",
+    "Do not modify read-only paths listed in frontend immutablePaths."
   ],
   "nonGoals": [
-    "Do not remove hero images used on other pages (e.g., evangelism pages) unless they are part of AuthGate.",
-    "Do not change landing page headline, subheadline, CTA button copy, or navigation behavior beyond what is necessary to remove the hero image."
+    "Do not redesign the AuthGate hero section content, typography, or CTA behavior.",
+    "Do not change spacing between any other hero section elements besides the selected image and headline."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

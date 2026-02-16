@@ -15,8 +15,17 @@ export default function AuthGate() {
       <section className="px-4 pt-32 pb-32 md:pt-40 md:pb-48">
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col items-center text-center space-y-8">
+            {/* Dove Image */}
+            <div className="w-full max-w-md -mb-4">
+              <img
+                src="/assets/dave.png"
+                alt="White dove with outstretched wings symbolizing the Holy Spirit"
+                className="w-full h-auto object-contain max-h-[300px] md:max-h-[400px]"
+              />
+            </div>
+
             {/* Main Headline */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground max-w-5xl leading-[1.1]">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground max-w-5xl leading-[1.1] -mt-12">
               Recognize God's Work in the Present Day
             </h1>
 

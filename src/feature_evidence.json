@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-remove-the-hero-image-block-from-the-landing-page-authgate-component-so-the-page-no-longer-renders-any-hero-image-or-hero-image-fallback-placeholder-above-the-main-headline",
-      "featureTitle": "Remove the hero image block from the landing page AuthGate component so the page no longer renders any hero image or hero-image fallback placeholder above the main headline.",
+      "featureId": "feature-on-the-authgate-landing-page-hero-section-minimize-remove-the-vertical-gap-between-the-selected-hero-image-element-xpath-html-1-body-1-div-1-div-1-div-1-main-1-div-1-section-1-div-1-div-1-div-1-img-1-and-the-selected-main-headline-element-xpath-html-1-body-1-div-1-div-1-div-1-main-1-div-1-section-1-div-1-div-1-h1-1-by-adjusting-spacing-styles-only-on-these-two-selected-elements-without-changing-spacing-for-any-other-elements-in-the-hero-section-e-g-subheadline-cta-buttons",
+      "featureTitle": "On the AuthGate landing page hero section, minimize/remove the vertical gap between the selected hero image element (XPath: /html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/section[1]/div[1]/div[1]/div[1]/img[1]) and the selected main headline element (XPath: /html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/section[1]/div[1]/div[1]/h1[1]) by adjusting spacing styles ONLY on these two selected elements, without changing spacing for any other elements in the hero section (e.g., subheadline, CTA buttons).",
       "files": [
         "frontend/src/components/AuthGate.tsx"
       ],
@@ -17,25 +17,6 @@
       ],
       "testIds": [
         "REQ-1"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-clean-up-authgate-component-code-after-removing-the-hero-image-by-deleting-unused-state-and-imports-related-to-hero-image-error-handling",
-      "featureTitle": "Clean up AuthGate component code after removing the hero image by deleting unused state and imports related to hero-image error handling.",
-      "files": [
-        "frontend/src/components/AuthGate.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-2"
       ],
       "confidence": "high"
     }

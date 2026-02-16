@@ -1,22 +1,31 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-16T13:49:40.016Z",
-  "summary": "AuthGate appears updated to remove any hero image rendering and associated error-state logic; however, additional unrequested metadata/state files were modified.",
-  "missing_requirements": [],
+  "generatedAt": "2026-02-16T16:52:36.638Z",
+  "summary": "REQ-1 (reduce vertical gap between AuthGate hero image and headline) is partially addressed by adding negative margins, but the diff adjusts spacing on a wrapper <div> around the <img>, which violates the constraint to change spacing styles ONLY on the selected <img> and <h1> elements.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Adjust spacing styles ONLY on the selected hero <img> and selected main <h1> (per provided XPaths), without changing spacing for any other hero elements.",
+      "reason": "The diff adds spacing-related styling (-mb-4) to the <div> wrapper around the <img>, not to the selected <img> element itself. This is outside the two selected elements and thus does not meet the 'ONLY these two selected elements' constraint/AC.",
+      "evidence": [
+        "frontend/src/components/AuthGate.tsx (image wrapper: <div className=\"w-full max-w-md -mb-4\"> ... <img ... />)"
+      ]
+    }
+  ],
   "hallucinated_features": [
     {
-      "description": "Updated/maintained a generated repository summary file (frontend-file-summaries.txt).",
-      "reason": "BuildRequest only asked for frontend AuthGate hero image removal and related cleanup; it did not request changes to repository summary artifacts.",
+      "description": "Updating project tracking metadata (marking new_feature_requests and other state fields) unrelated to the requested spacing-only UI change.",
+      "reason": "The BuildRequest is only about adjusting spacing between the AuthGate hero image and headline; changes to project_state.json are not requested UI behavior changes.",
       "evidence": [
-        "frontend-file-summaries.txt"
+        "project_state.json"
       ]
     },
     {
-      "description": "Modified project tracking/state metadata (project_state.json), including adding/updating feature request entries and statuses.",
-      "reason": "BuildRequest did not request any changes to project state/PM metadata files—only code changes to AuthGate.",
+      "description": "Updating repository-wide frontend file summaries text unrelated to implementing the spacing change.",
+      "reason": "The BuildRequest does not request updating documentation/summary files; this change is ancillary.",
       "evidence": [
-        "project_state.json"
+        "frontend-file-summaries.txt"
       ]
     }
   ],

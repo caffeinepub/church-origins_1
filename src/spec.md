@@ -1,10 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Remove the hero image block from the AuthGate (landing) page so no hero image or fallback placeholder appears above the main headline.
+**Goal:** Reduce/remove the extra vertical space between the AuthGate hero image and the main headline without affecting other hero content spacing.
 
 **Planned changes:**
-- Remove the hero image rendering block (and any fallback “Hero image” placeholder UI) from `frontend/src/components/AuthGate.tsx`.
-- Clean up `AuthGate.tsx` by deleting unused imports/state related to hero-image error handling (e.g., `useState`, `imageError/setImageError`) after the hero image is removed.
+- Adjust spacing-related styles on the AuthGate hero `<img>` element to reduce the bottom gap above the headline.
+- Adjust spacing-related styles on the AuthGate main `<h1>` element to reduce the top gap below the image.
+- Verify the updated spacing does not cause overlap/cropping on common mobile and desktop breakpoints.
 
-**User-visible outcome:** The landing page shows no image above the main headline, with a balanced layout and no leftover hero-image placeholder space.
+**User-visible outcome:** The AuthGate landing hero image and main headline appear closer together with noticeably less vertical whitespace, while the subheadline and CTA button spacing remains unchanged.

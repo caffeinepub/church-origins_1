@@ -1,36 +1,21 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Remove AuthGate landing hero image",
+  "title": "AuthGate hero: reduce image-to-headline vertical gap",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Remove the hero image and any hero-image fallback UI from the AuthGate (landing) page while keeping the layout balanced.",
+      "summary": "Reduce the vertical whitespace between the AuthGate hero image (<img>) and main headline (<h1>) by adjusting spacing styles only on those two elements.",
       "acceptanceCriteria": [
-        "On the AuthGate (landing) page, no image is displayed above the main headline.",
-        "The previous fallback 'Hero image' placeholder UI is not rendered anywhere on the landing page.",
-        "The page layout remains visually balanced (no large empty container where the image used to be)."
+        "The vertical whitespace between the hero image and the main headline is visibly reduced compared to the current layout.",
+        "Only the selected elements’ spacing-related styles are changed; spacing for the subheadline and CTA button group remains unchanged.",
+        "No layout overlap/cropping occurs at common responsive breakpoints (mobile and desktop)."
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/AuthGate.tsx",
           "operation": "modify",
-          "description": "Remove the entire hero-image block (including the <img> and its fallback placeholder UI) from the top of the landing page so nothing renders above the main headline; adjust surrounding spacing/classes as needed to avoid leaving an empty container. (No selected component required.)"
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Delete unused AuthGate state and imports that were only used for hero-image error handling to keep the build clean.",
-      "acceptanceCriteria": [
-        "`useState` and the `imageError/setImageError` logic are removed from `frontend/src/components/AuthGate.tsx` if no longer needed.",
-        "The landing page builds without TypeScript/ESLint unused import warnings caused by the removal."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/AuthGate.tsx",
-          "operation": "modify",
-          "description": "Remove `useState` import and delete `imageError/setImageError` state plus any onError/fallback-related logic that becomes unused after the hero image removal; ensure imports from `lucide-react` and other modules remain minimal and used."
+          "description": "Adjust ONLY the selected hero <img> and main <h1> elements’ spacing-related Tailwind classes (e.g., tweak the <h1> negative margin-top and/or add a controlled margin adjustment on the <img>) to counteract the parent stack gap, while leaving subheadline and CTA group spacing untouched; verify no overlap/cropping at mobile/desktop breakpoints."
         }
       ]
     }

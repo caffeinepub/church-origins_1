@@ -4,21 +4,13 @@
   "summary": "New project",
   "architectural_notes": [],
   "known_issues": [],
-  "isFixRequest": false,
+  "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-remove-the-hero-image-block-from-the-landing-page-authgate-component-so-the-page-no-longer-renders-any-hero-image-or-hero-image-fallback-placeholder-above-the-main-headline",
-      "title": "Remove the hero image block from the landing page AuthGate component so the page no longer renders any hero image or hero-image fallback placeholder above the main headline.",
+      "id": "feature-on-the-authgate-landing-page-hero-section-minimize-remove-the-vertical-gap-between-the-selected-hero-image-element-xpath-html-1-body-1-div-1-div-1-div-1-main-1-div-1-section-1-div-1-div-1-div-1-img-1-and-the-selected-main-headline-element-xpath-html-1-body-1-div-1-div-1-div-1-main-1-div-1-section-1-div-1-div-1-h1-1-by-adjusting-spacing-styles-only-on-these-two-selected-elements-without-changing-spacing-for-any-other-elements-in-the-hero-section-e-g-subheadline-cta-buttons",
+      "title": "On the AuthGate landing page hero section, minimize/remove the vertical gap between the selected hero image element (XPath: /html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/section[1]/div[1]/div[1]/div[1]/img[1]) and the selected main headline element (XPath: /html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/section[1]/div[1]/div[1]/h1[1]) by adjusting spacing styles ONLY on these two selected elements, without changing spacing for any other elements in the hero section (e.g., subheadline, CTA buttons).",
       "reqIds": [
         "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-clean-up-authgate-component-code-after-removing-the-hero-image-by-deleting-unused-state-and-imports-related-to-hero-image-error-handling",
-      "title": "Clean up AuthGate component code after removing the hero image by deleting unused state and imports related to hero-image error handling.",
-      "reqIds": [
-        "REQ-2"
       ],
       "version": 1
     }
@@ -26,12 +18,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Remove the hero image from the landing page",
+      "summary": "Remove extra spacing between elements/sections (user requested: \"Remove the Space between\")",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "projectName": "Remove landing page hero image",
+  "projectName": "Church Origins",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

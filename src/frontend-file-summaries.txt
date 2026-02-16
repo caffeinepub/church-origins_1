@@ -1,6 +1,6 @@
 {
   "frontend/src/App.tsx": "Main application component with router setup including authenticated routes, five original evangelism routes, Topics & Questions routes, Faith Resources route, PeaceWithGod Steps intro and long page routes, new catch-all not-found route, and RootLayout integrating smooth scroll-to-top behavior for all evangelism pages.",
-  "frontend/src/components/AuthGate.tsx": "Landing page component with headline, subheadline, CTA buttons, three-column features section, about section, and footer with dynamic year and UTM-tracked caffeine.ai attribution, without hero image.",
+  "frontend/src/components/AuthGate.tsx": "Landing page component with dove image above headline (with reduced vertical spacing via -mb-4 on image container and -mt-12 on headline), subheadline, CTA buttons, three-column features section, about section, and footer with dynamic year and UTM-tracked caffeine.ai attribution.",
   "frontend/src/components/layout/AppLayout.tsx": "Shared layout wrapper with header, main content, and footer with dynamic year and UTM-tracked caffeine.ai attribution, without Bible sidebar functionality.",
   "frontend/src/components/layout/AppHeader.tsx": "Application header with navigation actions for peace with God, faith resources, topics & questions, testimony submission, and authentication, without Bible button.",
   "frontend/src/components/feed/FeedItemCard.tsx": "Legacy feed card component for rendering Scripture entries, discernment reflections, and testimonies with navigation to detail pages.",
